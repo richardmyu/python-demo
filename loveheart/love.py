@@ -17,6 +17,8 @@ s.insert(1, " ")
 s.insert(6, " ")
 
 string = "".join(s)
+
+sourceStr = 'o-0'
 # print(string)
 
 # print('\n'.join([''.join([('Love'[(x - y) % len('Love')] if ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3 - (
@@ -25,7 +27,7 @@ string = "".join(s)
 # print('\n'.join([''.join([('SB'[(x - y) % len('SB')] if ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3 - (
 #     x * 0.05) ** 2 * (y * 0.1) ** 3 <= 0 else ' ') for x in range(-30, 30)]) for y in range(30, -30, -1)]))
 
-txt = '\n'.join([''.join([('Love'[(x - y) % len('Love')] if ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3 - (
+txt = '\n'.join([''.join([(sourceStr[(x - y) % len(sourceStr)] if ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3 - (
     x * 0.05) ** 2 * (y * 0.1) ** 3 <= 0 else ' ') for x in range(-30, 30)]) for y in range(30, -30, -1)])
 
 with open("output.txt", "w") as f:
