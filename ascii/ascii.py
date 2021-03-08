@@ -19,8 +19,8 @@ WIDTH = args.width
 HEIGHT = args.height
 OUTPUT = args.output
 
-ascii_char = (
-    "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
+ascii_char = ("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
+
 
 # 将 256 灰度映射到 70 个字符上
 
@@ -31,7 +31,7 @@ def get_char(r, g, b, alpha=256):
     length = len(ascii_char)
     gray = int(0.2116 * r + 0.7152 * g + 0.0722 * b)
 
-    unit = (256.0 + 1 ) / length
+    unit = (256.0 + 1) / length
     return ascii_char[int(gray / unit)]
 
 
