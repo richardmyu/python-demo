@@ -5,7 +5,6 @@ import os
 from PIL import Image
 import exifread
 
-
 def reset_orientation(img):
     """
     处理图片的自动（PIL处理回发生）旋转
