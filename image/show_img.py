@@ -67,22 +67,6 @@ def get_area(img):
     w_h = reset_orientation(im)
     print(w_h["size"])
 
-    # f = open('./img/' + img, 'rb')
-    # image_map = exifread.process_file(f)
-    # print("{}".format('-' * 20))
-    # try:
-    #     print("--- " + img + " ---")
-    #     for item in image_map:
-    #         print(item, image_map[item])
-    #     print("Image ImageWidth ", image_map["Image ImageWidth"])
-    #     print("Image ImageLength ", image_map["Image ImageLength"])
-    #     print("Image Orientation ", image_map["Image Orientation"])
-    #     print("Image DateTime ", image_map["Image DateTime"])
-    #     print("EXIF ExifImageWidth ", image_map["EXIF ExifImageWidth"])
-    #     print("EXIF ExifImageLength ", image_map["EXIF ExifImageLength"])
-    # except Exception as e:
-    #     print('ERROR: 图片中不包含 Gps 信息')
-
 
 if __name__ == "__main__":
     images = os.listdir('./img')
