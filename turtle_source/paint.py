@@ -4,7 +4,7 @@
 
             tdemo_paint.py
 
-A simple  event-driven paint program
+A output_files  event-driven paint program
 
 - left mouse button moves turtle
 - middle mouse button changes color

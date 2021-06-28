@@ -4,7 +4,7 @@
 
               tdemo_peace.py
 
-A simple drawing suitable as a beginner's
+A output_files drawing suitable as a beginner's
 programming example. Aside from the
 peacecolors assignment and the for loop,
 it only uses turtle commands.

@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('file')  # 输入文件
 parser.add_argument('-o', '--output')  # 输出文件
 parser.add_argument('--width', type=int, default=80)  # 默认输出字符宽
-parser.add_argument('--height', type=int, default=80)  # 默认输出字符高
+parser.add_argument('--height', type=int, default=40)  # 默认输出字符高
 
 # 获取参数
 args = parser.parse_args()
@@ -19,6 +19,16 @@ WIDTH = args.width
 HEIGHT = args.height
 OUTPUT = args.output
 
+if args.file.find("\\"):
+    IMG_NAME = ''.join(args.file.split("\\")[-1:])
+else:
+    IMG_NAME = args.file
+
+OUTPUT_DEFAULT = "./output_files/" + IMG_NAME + ".txt"
+
+# 当只有一个字符串的时候：
+# tuple    ("abc",)
+# string   ("abc")
 ascii_char = ("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
 
 
@@ -26,6 +36,7 @@ ascii_char = ("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\
 
 
 def get_char(r, g, b, alpha=256):
+    # alpha 值为 0 的时候表示图片中该位置为空白
     if alpha == 0:
         return ' '
     length = len(ascii_char)
@@ -43,9 +54,12 @@ if __name__ == '__main__':
 
     for i in range(HEIGHT):
         for j in range(WIDTH):
+            # 获取得到坐标 (j, i) 位置的 RGB 像素值
+            # * 元组展开
             txt += get_char(*im.getpixel((j, i)))
         txt += '\n'
 
+    # im.show()
     print(txt)
 
     # 将字符画输出到文件
@@ -53,5 +67,5 @@ if __name__ == '__main__':
         with open(OUTPUT, 'w') as f:
             f.write(txt)
     else:
-        with open("./ascii/simple/output.txt", "w") as f:
+        with open(OUTPUT_DEFAULT, "w") as f:
             f.write(txt)

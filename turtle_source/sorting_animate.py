@@ -43,7 +43,8 @@ class Block(Turtle):
 class Shelf(list):
 
     def __init__(self, y):
-        "create a shelf. y is y-position of first block"
+        """create a shelf. y is y-position of first block
+        """
         self.y = y
         self.x = -150
 
@@ -83,7 +84,7 @@ class Shelf(list):
         b.unglow()
 
 
-def isort(shelf):
+def i_sort(shelf):
     length = len(shelf)
     for i in range(1, length):
         hole = i
@@ -93,7 +94,7 @@ def isort(shelf):
     return
 
 
-def ssort(shelf):
+def s_sort(shelf):
     length = len(shelf)
     for j in range(0, length - 1):
         imin = j
@@ -116,12 +117,12 @@ def partition(shelf, left, right, pivot_index):
     return store_index
 
 
-def qsort(shelf, left, right):
+def q_sort(shelf, left, right):
     if left < right:
         pivot_index = left
         pivot_new_index = partition(shelf, left, right, pivot_index)
-        qsort(shelf, left, pivot_new_index - 1)
-        qsort(shelf, pivot_new_index + 1, right)
+        q_sort(shelf, left, pivot_new_index - 1)
+        q_sort(shelf, pivot_new_index + 1, right)
 
 
 def randomize():
@@ -144,33 +145,33 @@ def show_text(text, line=0):
     write(text, align="center", font=("Courier", 16, "bold"))
 
 
-def start_ssort():
+def start_s_sort():
     disable_keys()
     clear()
     show_text("Selection Sort")
-    ssort(s)
+    s_sort(s)
     clear()
     show_text(instructions1)
     show_text(instructions2, line=1)
     enable_keys()
 
 
-def start_isort():
+def start_i_sort():
     disable_keys()
     clear()
     show_text("Insertion Sort")
-    isort(s)
+    i_sort(s)
     clear()
     show_text(instructions1)
     show_text(instructions2, line=1)
     enable_keys()
 
 
-def start_qsort():
+def start_q_sort():
     disable_keys()
     clear()
     show_text("Quicksort")
-    qsort(s, 0, len(s) - 1)
+    q_sort(s, 0, len(s) - 1)
     clear()
     show_text(instructions1)
     show_text(instructions2, line=1)
@@ -180,8 +181,8 @@ def start_qsort():
 def init_shelf():
     global s
     s = Shelf(-200)
-    vals = (4, 2, 8, 9, 1, 5, 10, 3, 7, 6)
-    for i in vals:
+    values = (4, 2, 8, 9, 1, 5, 10, 3, 7, 6)
+    for i in values:
         s.push(Block(i))
 
 
@@ -193,16 +194,16 @@ def disable_keys():
 
 
 def enable_keys():
-    onkey(start_isort, "i")
-    onkey(start_ssort, "s")
-    onkey(start_qsort, "q")
+    onkey(start_i_sort, "i")
+    onkey(start_s_sort, "s")
+    onkey(start_q_sort, "q")
     onkey(randomize, "r")
-    onkey(bye, "space")
+    # onkey(bye, "space")
 
 
 def main():
     getscreen().clearscreen()
-    ht();
+    ht()
     penup()
     init_shelf()
     show_text(instructions1)
