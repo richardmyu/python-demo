@@ -23,11 +23,11 @@ img = args.file
 s = ''.join(args.file.split('\\')[-1:]) if args.file.find('\\') else args.file
 img_name = ''.join(s.split('.')[0])
 
-# ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
-ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft'
+ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
 tmp_path = ''
 
-def gif2pic(gif_file, is_gray=False, scale=1, fineness=1):
+
+def gif2pic(gif_file, is_gray=False, scale=1.6, fineness=0.8):
     """拆分 gif 将每一帧处理成字符画
     :param gif_file: gif 文件
     :param is_gray: 是否灰度模式（True: 灰度模式；False: 彩色模式）
@@ -56,22 +56,25 @@ def gif2pic(gif_file, is_gray=False, scale=1, fineness=1):
         # tell(): 返回当前帧号
         current = im.tell()
         total = im.n_frames
-        if current >= (total - 1):
-            break
         name = 'tmp_' + img_name + '_' + str(current) + '.png'
         # 保存每一帧图片
         im.save(name)
         # 将每一帧处理为字符画
         img2ascii(name, is_gray, scale, fineness)
         # 继续处理下一帧
+        if current >= (total - 1):
+            break
         im.seek(current + 1)
 
 
-def get_char(r, g, b):
+def get_char(r, g, b, alpha=255):
     """将 256 灰度映射到字符上"""
+    if alpha == 0:
+        return ' '
     length = len(ascii_char)
-    gray = int(0.2116 * r + 0.7152 * g + 0.0722 * b)
-    unit = (256.0 + 1) / length
+    # gray = int(0.2116 * r + 0.7152 * g + 0.0722 * b)
+    gray = int((0.2116 * r + 0.7152 * g + 0.0722 * b) * alpha / 255)
+    unit = (256 + 1) / length
     return ascii_char[int(gray / unit)]
 
 
@@ -85,7 +88,7 @@ def img2ascii(png_img, is_gray, scale, fineness):
     print('--- do img2ascii ---')
     # 将图片转换为 RGB 模式
     try:
-        im = Image.open(png_img).convert('RGB')
+        im = Image.open(png_img).convert('RGBA')
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
         print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
@@ -135,13 +138,13 @@ def img2ascii(png_img, is_gray, scale, fineness):
         line_color = []
         for j in range(w):
             pixel = im.getpixel((j, i))
-            line_color.append((pixel[0], pixel[1], pixel[2]))
-            line += get_char(pixel[0], pixel[1], pixel[2])
+            line_color.append(pixel)
+            line += get_char(*pixel)
         txt.append(line)
         colors.append(line_color)
 
     # new(mode, size, color=0): 创建具有给定模式和大小的新图像
-    img_txt = Image.new('RGB', (raw_width, raw_height), (255, 255, 255))
+    img_txt = Image.new('RGB', (raw_width, raw_height), (255, 255, 255, 255))
 
     # ImageDraw.Draw(im, mode=None): 创建可用于绘制给定图像的对象
     draw = ImageDraw.Draw(img_txt)
@@ -149,7 +152,7 @@ def img2ascii(png_img, is_gray, scale, fineness):
         for i in range(len(txt[0])):
             if is_gray:
                 # ImageDraw.text(xy, text, fill=None): 在给定位置绘制字符串
-                draw.text((i * block_x, j * block_y), txt[j][i], (119, 136, 153))
+                draw.text((i * block_x, j * block_y), txt[j][i], (119, 136, 153, 255))
             else:
                 draw.text((i * block_x, j * block_y), txt[j][i], colors[j][i])
 

@@ -33,7 +33,7 @@ OUTPUT_DEFAULT = './output_files/' + IMG_NAME + '.txt'
 ascii_char = list("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
 
 
-def get_char(r, g, b, alpha=256):
+def get_char(r, g, b, alpha=255):
     # 判断 alpha 值
     if alpha == 0:
         return ' '
@@ -42,7 +42,7 @@ def get_char(r, g, b, alpha=256):
     length = len(ascii_char)
 
     # 将 RGB 值转为灰度值 gray，灰度值范围为 0-255
-    gray = int(0.2126 * r + 0.7152 * g + 0.0722 * b)
+    gray = int((0.2116 * r + 0.7152 * g + 0.0722 * b) * alpha / 255)
 
     # 灰度值范围为 0-255，而字符集只有 70
     # 需要进行如下处理才能将灰度值映射到指定的字符上
@@ -79,3 +79,4 @@ if __name__ == '__main__':
     else:
         with open(OUTPUT_DEFAULT, 'w') as f:
             f.write(txt)
+    print('--- done ---')
