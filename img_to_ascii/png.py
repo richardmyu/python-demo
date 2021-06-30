@@ -1,22 +1,19 @@
 # -*- coding=utf-8 -*-
 import os
-
 import PIL
 from PIL import Image, ImageDraw, ImageFont
 import argparse
+import datetime
 
 # 命令行输入参数处理
 parser = argparse.ArgumentParser()
-
 parser.add_argument('file')  # 输入文件
 
 # 获取参数
 args = parser.parse_args()
-
 IMG = args.file
 s = ''.join(args.file.split('\\')[-1:]) if args.file.find('\\') else args.file
 img_name = ''.join(s.split('.')[0])
-
 OUTPUT_DEFAULT = './output_files/' + img_name + '.txt'
 ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
 
@@ -115,5 +112,8 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
 
 
 if __name__ == '__main__':
+    start_time = datetime.datetime.now()
     # img2ascii(IMG, True, 2, 0.6)
     img2ascii(IMG, False, 2, 0.6)
+    end_time = datetime.datetime.now()
+    print('spend time: {}'.format(end_time - start_time))
