@@ -15,7 +15,8 @@ IMG = args.file
 s = ''.join(args.file.split('\\')[-1:]) if args.file.find('\\') else args.file
 img_name = ''.join(s.split('.')[0])
 OUTPUT_DEFAULT = './output_files/' + img_name + '.txt'
-ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
+# ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
+ascii_char = 'iloveyou'
 
 
 def get_char(r, g, b, alpha=255):
@@ -34,7 +35,7 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
     :param img: 图像
     :param is_gray: 是否灰度模式（True: 灰度模式；False: 彩色模式）
     :param scale: 输出字符图放缩比例，有效值 [0.5, 4]
-    :param fineness: 输出字符图字符颗粒放缩比，有效值 [0.3, 1]
+    :param fineness: 输出字符图字符颗粒放缩比，有效值 [0.3, 1.2]
     """
     print('--- do img2ascii ---')
     # 将图片转换为 RGB 模式
@@ -58,20 +59,20 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
         raw_width = int(im.width * scale)
         raw_height = int(im.height * scale)
     else:
-        raw_width = int(im.width * 1.6)
-        raw_height = int(im.height * 1.6)
+        raw_width = int(im.width * 1)
+        raw_height = int(im.height * 1)
 
     # 获取设定的字体的尺寸
     font = ImageFont.truetype('arial.ttf', 16)
     font_x, font_y = font.getsize(' ')
 
     # 确定单元的大小
-    if 0.3 <= fineness <= 1:
+    if 0.3 <= fineness <= 1.2:
         block_x = int(font_x * fineness)
         block_y = int(font_y * fineness)
     else:
-        block_x = int(font_x * 0.3)
-        block_y = int(font_y * 0.3)
+        block_x = int(font_x * 0.8)
+        block_y = int(font_y * 0.8)
 
     # 确定长宽各有几个单元
     w = int(raw_width / block_x)
@@ -114,6 +115,6 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
 if __name__ == '__main__':
     start_time = datetime.datetime.now()
     # img2ascii(IMG, True, 2, 0.6)
-    img2ascii(IMG, False, 2, 0.6)
+    img2ascii(IMG, False, 1, 1.2)
     end_time = datetime.datetime.now()
     print('spend time: {}'.format(end_time - start_time))
