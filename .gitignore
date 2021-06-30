@@ -3,5 +3,5 @@
 .vs
 .git
 **/img
-**/tmp
+**/tmp_*
 **/*.txt

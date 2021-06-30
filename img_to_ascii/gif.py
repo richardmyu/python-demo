@@ -6,6 +6,7 @@
   2.将所有静态图片转换为字符图；
   3.再将所有字符图合成新 gif 图片
 """
+
 import PIL
 from PIL import Image, ImageDraw, ImageFont
 import argparse
@@ -19,20 +20,19 @@ parser.add_argument('file')  # 输入文件
 # 获取参数
 args = parser.parse_args()
 img = args.file
-if args.file.find('\\'):
-    s = ''.join(args.file.split('\\')[-1:])
-else:
-    s = args.file
+s = ''.join(args.file.split('\\')[-1:]) if args.file.find('\\') else args.file
 img_name = ''.join(s.split('.')[0])
 
-ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
+# ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
+ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft'
 tmp_path = ''
 
-
-def gif2pic(gif_file, is_gray=False):
+def gif2pic(gif_file, is_gray=False, scale=1, fineness=1):
     """拆分 gif 将每一帧处理成字符画
-    gif_file: gif 文件
-    is_gray: 是否灰度模式（True: 灰度模式；False: 彩色模式）
+    :param gif_file: gif 文件
+    :param is_gray: 是否灰度模式（True: 灰度模式；False: 彩色模式）
+    :param scale: 输出字符图放缩比例，有效值 [0.5, 4]
+    :param fineness: 输出字符图字符颗粒放缩比，有效值 [0.3, 1]（适当地调小颗粒，使得字符图更具体，更迫近原图）
     """
     print('--- do gif2pic ---')
     im = Image.open(gif_file)
@@ -40,57 +40,47 @@ def gif2pic(gif_file, is_gray=False):
     # 返回当前工作目录
     concurrent_path = os.getcwd()
     global tmp_path
-    tmp_path = concurrent_path + '/tmp_' + img_name
+    tmp_path = concurrent_path + r'\tmp_' + img_name
+
     if not os.path.exists(tmp_path):
         os.mkdir(tmp_path)
+        # 改变当前工作目录到指定的路径
+        os.chdir(tmp_path)
     else:
+        os.chdir(tmp_path)
         # 清空 tmp 目录下内容
         for f in os.listdir(tmp_path):
             os.remove(f)
-    # 改变当前工作目录到指定的路径
-    os.chdir(tmp_path)
-    try:
-        while True:
-            # tell(): 返回当前帧号
-            current = im.tell()
-            total = im.n_frames
-            if current >= (total - 1):
-                break
-            name = 'tmp_' + img_name + '_' + str(current) + '.png'
-            # 保存每一帧图片
-            im.save(name)
-            # 将每一帧处理为字符画
-            img2ascii(name, is_gray)
-            # 继续处理下一帧
-            im.seek(current + 1)
-    except EOFError as e:
-        # 如果调用试图在序列结束后查找
-        print('EOFError', e)
-        print(e.__traceback__.tb_frame.f_globals['__file__'])
-        print(e.__traceback__.tb_lineno)
-        return
-    except Exception as e:
-        print('Error', e)
-        print(e.__traceback__.tb_frame.f_globals['__file__'])
-        print(e.__traceback__.tb_lineno)
-        return
-    os.chdir(concurrent_path)
+
+    while True:
+        # tell(): 返回当前帧号
+        current = im.tell()
+        total = im.n_frames
+        if current >= (total - 1):
+            break
+        name = 'tmp_' + img_name + '_' + str(current) + '.png'
+        # 保存每一帧图片
+        im.save(name)
+        # 将每一帧处理为字符画
+        img2ascii(name, is_gray, scale, fineness)
+        # 继续处理下一帧
+        im.seek(current + 1)
 
 
 def get_char(r, g, b):
-    """将 256 灰度映射到 70 个字符上"""
+    """将 256 灰度映射到字符上"""
     length = len(ascii_char)
     gray = int(0.2116 * r + 0.7152 * g + 0.0722 * b)
     unit = (256.0 + 1) / length
     return ascii_char[int(gray / unit)]
 
 
-def img2ascii(png_img, is_gray, scale=1.6, fineness=0.6):
-    """将图片处理成字符画
+def img2ascii(png_img, is_gray, scale, fineness):
+    """将单幅 png 图片处理成字符画
     :param png_img: 要处理的图片
     :param is_gray: 是否灰度模式
     :param scale: 输出字符图放缩比例
-    :param fineness: 输出字符图字符颗粒放缩比（适当地调小颗粒，使得字符图更具体，更迫近原图）
+    :param fineness: 输出字符图字符颗粒放缩比
     """
     print('--- do img2ascii ---')
     # 将图片转换为 RGB 模式
@@ -98,31 +88,36 @@ def img2ascii(png_img, is_gray, scale=1.6, fineness=0.6):
         im = Image.open(png_img).convert('RGB')
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
-        print(e.__traceback__.tb_frame.f_globals['__file__'])
-        print(e.__traceback__.tb_lineno)
+        print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
         return
     except PIL.UnidentifiedImageError as e:
         print('PIL.UnidentifiedImageError: {}'.format(e))
-        print(e.__traceback__.tb_frame.f_globals['__file__'])
-        print(e.__traceback__.tb_lineno)
+        print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
         return
     except ValueError as e:
         print('ValueError: {}'.format(e))
-        print(e.__traceback__.tb_frame.f_globals['__file__'])
-        print(e.__traceback__.tb_lineno)
+        print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
         return
 
     # 设定处理后的字符画大小
-    raw_width = int(im.width * scale)
-    raw_height = int(im.height * scale)
+    if 0.5 <= scale <= 4:
+        raw_width = int(im.width * scale)
+        raw_height = int(im.height * scale)
+    else:
+        raw_width = int(im.width * 1.6)
+        raw_height = int(im.height * 1.6)
 
     # 获取设定的字体的尺寸
     font = ImageFont.truetype('arial.ttf', 16)
     font_x, font_y = font.getsize(' ')
 
     # 确定单元的大小
-    block_x = int(font_x * fineness)
-    block_y = int(font_y * fineness)
+    if 0.3 <= fineness <= 1:
+        block_x = int(font_x * fineness)
+        block_y = int(font_y * fineness)
+    else:
+        block_x = int(font_x * 0.3)
+        block_y = int(font_y * 0.3)
 
     # 确定长宽各有几个单元
     w = int(raw_width / block_x)
@@ -158,10 +153,10 @@ def img2ascii(png_img, is_gray, scale=1.6, fineness=0.6):
             else:
                 draw.text((i * block_x, j * block_y), txt[j][i], colors[j][i])
 
-    img_txt.save(img, 'PNG')
+    img_txt.save(png_img, 'PNG')
 
 
-def pic2gif(out_name='chara', duration=1):
+def pic2gif(out_name='', duration=1):
     """ 读取 tmp 目录下文件合成 gif
     :param out_name: 合成图片名称
     :param duration: gif 图像间隔时间
@@ -172,8 +167,7 @@ def pic2gif(out_name='chara', duration=1):
         os.chdir(tmp_path)
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
-        print(e.__traceback__.tb_frame.f_globals['__file__'])
-        print(e.__traceback__.tb_lineno)
+        print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
         return
 
     # 返回 path 指定的文件夹包含的文件或文件夹的名字的列表
@@ -184,7 +178,8 @@ def pic2gif(out_name='chara', duration=1):
         images.append(imageio.imread(d))
 
     # Aliases mimsave = mimwrite
-    imageio.mimsave(out_name + '_ascii.gif', images, 'GIF', duration=duration)
+    name = out_name if len(out_name) > 0 else img_name
+    imageio.mimsave(name + '_ascii.gif', images, 'GIF', duration=duration)
     print('--- done ---')
 
 
