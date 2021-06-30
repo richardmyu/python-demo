@@ -6,7 +6,7 @@
   2.将所有静态图片转换为字符图；
   3.再将所有字符图合成新 gif 图片
 """
-
+import PIL
 from PIL import Image, ImageDraw, ImageFont
 import argparse
 import os
@@ -18,40 +18,37 @@ parser.add_argument('file')  # 输入文件
 
 # 获取参数
 args = parser.parse_args()
-IMG = args.file
-
+img = args.file
 if args.file.find('\\'):
-    IMG_NAME_ALL = ''.join(args.file.split('\\')[-1:])
+    s = ''.join(args.file.split('\\')[-1:])
 else:
-    IMG_NAME_ALL = args.file
-
-IMG_NAME = ''.join(IMG_NAME_ALL.split('.')[0])
+    s = args.file
+img_name = ''.join(s.split('.')[0])
 
 ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
+tmp_path = ''
 
 
-def gif2pic(file, is_gray=False):
+def gif2pic(gif_file, is_gray=False):
     """拆分 gif 将每一帧处理成字符画
-    file: gif 文件
-    is_gray: 是否黑白
-    font: ImageFont
+    gif_file: gif 文件
+    is_gray: 是否灰度模式（True: 灰度模式；False: 彩色模式）
     """
     print('--- do gif2pic ---')
-    im = Image.open(file)
+    im = Image.open(gif_file)
 
     # 返回当前工作目录
-    path = os.getcwd()
-    tmp_path = path + '/tmp'
-    # 改变当前工作目录到指定的路径
-    os.chdir(tmp_path)
-    # print('gif2pic--111', path)
+    concurrent_path = os.getcwd()
+    global tmp_path
+    tmp_path = concurrent_path + '/tmp_' + img_name
     if not os.path.exists(tmp_path):
         os.mkdir(tmp_path)
     else:
         # 清空 tmp 目录下内容
         for f in os.listdir(tmp_path):
             os.remove(f)
-
+    # 改变当前工作目录到指定的路径
+    os.chdir(tmp_path)
     try:
         while True:
             # tell(): 返回当前帧号
@@ -59,7 +56,7 @@ def gif2pic(file, is_gray=False):
             total = im.n_frames
             if current >= (total - 1):
                 break
-            name = IMG_NAME + '_tmp_' + str(current) + '.png'
+            name = 'tmp_' + img_name + '_' + str(current) + '.png'
             # 保存每一帧图片
             im.save(name)
             # 将每一帧处理为字符画
@@ -69,10 +66,15 @@ def gif2pic(file, is_gray=False):
     except EOFError as e:
         # 如果调用试图在序列结束后查找
         print('EOFError', e)
+        print(e.__traceback__.tb_frame.f_globals['__file__'])
+        print(e.__traceback__.tb_lineno)
+        return
     except Exception as e:
         print('Error', e)
-    finally:
-        os.chdir(path)
+        print(e.__traceback__.tb_frame.f_globals['__file__'])
+        print(e.__traceback__.tb_lineno)
+        return
+    os.chdir(concurrent_path)
 
 
 def get_char(r, g, b):
@@ -83,23 +85,44 @@ def get_char(r, g, b):
     return ascii_char[int(gray / unit)]
 
 
-def img2ascii(img, is_gray, scale=0.8):
-    """将图片处理成字符画"""
+def img2ascii(png_img, is_gray, scale=1.6, fineness=0.6):
+    """将图片处理成字符画
+    :param png_img: 要处理的图片
+    :param is_gray: 是否灰度模式
+    :param scale: 输出字符图放缩比例
+    :param fineness: 输出字符图字符颗粒放缩比（适当地调小颗粒，使得字符图更具体，更迫近原图）
+    """
     print('--- do img2ascii ---')
     # 将图片转换为 RGB 模式
-    im = Image.open(img).convert('RGB')
+    try:
+        im = Image.open(png_img).convert('RGB')
+    except FileNotFoundError as e:
+        print('FileNotFoundError: {}'.format(e))
+        print(e.__traceback__.tb_frame.f_globals['__file__'])
+        print(e.__traceback__.tb_lineno)
+        return
+    except PIL.UnidentifiedImageError as e:
+        print('PIL.UnidentifiedImageError: {}'.format(e))
+        print(e.__traceback__.tb_frame.f_globals['__file__'])
+        print(e.__traceback__.tb_lineno)
+        return
+    except ValueError as e:
+        print('ValueError: {}'.format(e))
+        print(e.__traceback__.tb_frame.f_globals['__file__'])
+        print(e.__traceback__.tb_lineno)
+        return
 
     # 设定处理后的字符画大小
-    raw_width = int(im.width)
-    raw_height = int(im.height)
+    raw_width = int(im.width * scale)
+    raw_height = int(im.height * scale)
 
     # 获取设定的字体的尺寸
     font = ImageFont.truetype('arial.ttf', 16)
     font_x, font_y = font.getsize(' ')
 
     # 确定单元的大小
-    block_x = int(font_x * scale)
-    block_y = int(font_y * scale)
+    block_x = int(font_x * fineness)
+    block_y = int(font_y * fineness)
 
     # 确定长宽各有几个单元
     w = int(raw_width / block_x)
@@ -135,26 +158,36 @@ def img2ascii(img, is_gray, scale=0.8):
             else:
                 draw.text((i * block_x, j * block_y), txt[j][i], colors[j][i])
 
-    img_txt.save(img)
+    img_txt.save(img, 'PNG')
 
 
 def pic2gif(out_name='chara', duration=1):
-    """读取 tmp 目录下文件合成 gif"""
+    """ 读取 tmp 目录下文件合成 gif
+    :param out_name: 合成图片名称
+    :param duration: gif 图像间隔时间
+    """
     print('--- do pic2gif ---')
-    os.chdir('./tmp')
+    try:
+        # global tmp_path
+        os.chdir(tmp_path)
+    except FileNotFoundError as e:
+        print('FileNotFoundError: {}'.format(e))
+        print(e.__traceback__.tb_frame.f_globals['__file__'])
+        print(e.__traceback__.tb_lineno)
+        return
 
     # 返回 path 指定的文件夹包含的文件或文件夹的名字的列表
-    # 没有参数，默认当前工作目录
-    dirs = os.listdir()
+    dirs = os.listdir()  # 没有参数，默认当前工作目录
     images = []
     for d in dirs:
         # imageio.imread(uri, format=None, **kwargs): 从指定的 uri 读取图像
         images.append(imageio.imread(d))
 
-    imageio.mimsave(out_name + '_ascii.gif', images, duration=duration)
+    # Aliases mimsave = mimwrite
+    imageio.mimsave(out_name + '_ascii.gif', images, 'GIF', duration=duration)
     print('--- done ---')
 
 
 if __name__ == '__main__':
-    gif2pic(IMG)
+    gif2pic(img)
     pic2gif()
