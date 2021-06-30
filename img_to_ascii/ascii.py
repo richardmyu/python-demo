@@ -42,7 +42,7 @@ def get_char(r, g, b, alpha=255):
     length = len(ascii_char)
 
     # 将 RGB 值转为灰度值 gray，灰度值范围为 0-255
-    gray = int((0.2116 * r + 0.7152 * g + 0.0722 * b) * alpha / 255)
+    gray = int(0.2116 * r + 0.7152 * g + 0.0722 * b)
 
     # 灰度值范围为 0-255，而字符集只有 70
     # 需要进行如下处理才能将灰度值映射到指定的字符上
