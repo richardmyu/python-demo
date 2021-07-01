@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+将图片（png, jpg）转换成字符"图"
+"""
+
 from PIL import Image
 import argparse
 

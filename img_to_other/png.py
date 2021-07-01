@@ -1,9 +1,15 @@
 # -*- coding=utf-8 -*-
+
+"""
+将静态图片（png, jpg）转换成字符图（png）
+"""
+
 import os
 import PIL
 from PIL import Image, ImageDraw, ImageFont
 import argparse
 import datetime
+import time
 
 # 命令行输入参数处理
 parser = argparse.ArgumentParser()
@@ -15,8 +21,7 @@ IMG = args.file
 s = ''.join(args.file.split('\\')[-1:]) if args.file.find('\\') else args.file
 img_name = ''.join(s.split('.')[0])
 OUTPUT_DEFAULT = './output_files/' + img_name + '.txt'
-# ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
-ascii_char = 'iloveyou'
+ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
 
 
 def get_char(r, g, b, alpha=255):
@@ -108,13 +113,13 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
             else:
                 draw.text((i * block_x, j * block_y), txt[j][i], colors[j][i])
     os.chdir(r'.\img')
-    img_txt.save(img_name + '_ascii.png')
+    img_txt.save(img_name + '_' + str(int(time.time())) + '_ascii.png')
     print('--- done ---')
 
 
 if __name__ == '__main__':
     start_time = datetime.datetime.now()
     # img2ascii(IMG, True, 2, 0.6)
-    img2ascii(IMG, False, 1, 1.2)
+    img2ascii(IMG, False, 2, 0.6)
     end_time = datetime.datetime.now()
     print('spend time: {}'.format(end_time - start_time))
