@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-将图片转换成马赛克图片
+(外源法)将图片转换成马赛克图片
 
 基本思路：
     1.读入目标图像，将他们分割成 M∗N 的小块网格；
@@ -29,6 +29,7 @@ def get_images(image_dir):
         # 得到文件绝对路径
         file_path = os.path.abspath(os.path.join(image_dir, file))
         try:
+            # 打开 file 并返回对应的('rb' 二进制读取文本) file object
             fp = open(file_path, "rb")
             im = Image.open(fp)
             images.append(im)
@@ -45,26 +46,37 @@ def get_images(image_dir):
 def get_average_rgb(image):
     """计算图像的平均 RGB 值
 
-    将图像包含的每个像素点的 R、G、B 值分别累加，然后除以像素点数，就得到图像的平均 R、G、B
-    值
+    将图像包含的每个像素点的 R、G、B 值分别累加
+    然后除以像素点数，就得到图像的平均 R、G、B 值
 
     :param image: PIL Image 对象
     :return: 平均 RGB 值
     """
     # 计算像素点数
     n_pixels = image.size[0] * image.size[1]
+
     # 获得图像包含的每种颜色及其计数，结果类似
     # [(c1, (r1, g1, b1)), (c2, (r2, g2, b2)), ...]
+    # c = n_pixels
     cols = image.getcolors(n_pixels)
+
     # 获得每种颜色的 R、G、B 累加值，结果类似
     # [(c1 * r1, c1 * g1, c1 * b1), (c2 * r2, c2 * g2, c2 * b2), ...]
-    sum_rgb = [(x[0] * x[1][0], x[0] * x[1][1], x[0] * x[1][2]) for x in cols]
+    # sum_rgb = [(x[0] * x[1][0], x[0] * x[1][1], x[0] * x[1][2]) for x in cols]
+    sum_rgb = []
+    for x in cols:
+        sum_rgb.append((x[0] * x[1][0], x[0] * x[1][1], x[0] * x[1][2]))
+
     # 先用 zip 方法对 sum_rgb 列表里的元组对象按列进行合并，结果类似
     # [(c1 * r1, c2 * r2, ...), (c1 * g1, c2 * g2, ...),
     # (c1 * b1, c2 * b2, ...)]
     # 然后计算所有颜色的 R、G、B 平均值，算法为
     # (sum(ci * ri) / np, sum(ci * gi) / np, sum(ci * bi) / np)
-    avg = tuple([int(sum(x) / n_pixels) for x in zip(*sum_rgb)])
+    # avg = tuple([int(sum(x) / n_pixels) for x in zip(*sum_rgb)])
+    sum_list = []
+    for x in zip(*sum_rgb):
+        sum_list.append(int(sum(x) / n_pixels))
+    avg = tuple(sum_list)
     return avg
 
 
@@ -105,8 +117,9 @@ def split_image(image, size):
 def get_match_index(input_avg, avgs):
     """找出颜色值最接近的索引
 
-    把颜色值看做三维空间里的一个点，依次计算目标点跟列表里每个点在三维空间里的距离，从而得到距
-    离最近的那个点的索引。
+    把颜色值看做三维空间里的一个点
+    依次计算目标点跟列表里每个点在三维空间里的距离
+    从而得到距离最近的那个点的索引
 
     :param input_avg: 目标颜色值
     :param avgs: 要搜索的颜色值列表
@@ -115,6 +128,7 @@ def get_match_index(input_avg, avgs):
 
     index = 0
     min_index = 0
+    # 正无穷
     min_dist = float("inf")
     for val in avgs:
         # 三维空间两点距离计算公式 (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
@@ -187,14 +201,14 @@ def create_photo_mosaic(target_image, input_images, grid_size,
     # 计算替换图像列表里每个图像的颜色平均值
     avgs = []
     for img in input_images:
-        avgs.append(get_average_rgb(img))
-        # avgs.append(get_average_rgb_numpy(img))
+        # avgs.append(get_average_rgb(img))
+        avgs.append(get_average_rgb_numpy(img))
 
     # 对每个网格小图像，从替换图像列表找到颜色最相似的那个，添加到 output_images 里
     for img in target_images:
         # 计算颜色平均值
-        avg = get_average_rgb(img)
-        # avg = get_average_rgb_numpy(img)
+        # avg = get_average_rgb(img)
+        avg = get_average_rgb_numpy(img)
 
         # 找到最匹配的那个小图像，添加到 output_images 里
         match_index = get_match_index(avg, avgs)
@@ -243,7 +257,7 @@ def main():
     print('reading input images...')
     input_images = get_images(args.input_folder)
     # 如果替换图像列表为空则退出程序
-    if input_images == []:
+    if len(input_images) == 0:
         print('No input images found in %s. Exiting.' % (args.input_folder,))
         exit()
 
@@ -252,14 +266,15 @@ def main():
     dims = (int(target_image.size[0] / grid_size[1]),
             int(target_image.size[1] / grid_size[0]))
     for img in input_images:
+        # 缩略图
         img.thumbnail(dims)
 
     # 生成马赛克图像
-    print('starting photomosaic creation...')
+    print('starting photo mosaic creation...')
     mosaic_image = create_photo_mosaic(target_image, input_images, grid_size)
 
     # 保存马赛克图像
-    mosaic_image.save(output_filename, 'PNG')
+    mosaic_image.save(os.path.join(r'.\img', output_filename), 'PNG')
     print("saved output to %s" % (output_filename,))
 
     print('done.')
