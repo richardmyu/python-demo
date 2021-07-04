@@ -35,6 +35,7 @@ OUTPUT = args.output
 OUTPUT_DEFAULT = './output_files/' + IMG_NAME + '.txt'
 
 ascii_char = list("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
+# ascii_char = list("B8WMoahkbdpqwmZO0QLCJUYXzcvunxrjft")
 
 
 def get_char(r, g, b, alpha=255):
@@ -74,7 +75,7 @@ if __name__ == '__main__':
         # 遍历完一行后需要增加换行符
         txt += '\n'
     # 输出到屏幕
-    # print(txt)
+    print(txt)
 
     # 字符画输出到文件
     if OUTPUT:
