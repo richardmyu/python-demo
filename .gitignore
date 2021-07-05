@@ -7,3 +7,7 @@
 **/test*
 **/*.txt
 **/*.png
+
+# python
+
+*/__pycache__
