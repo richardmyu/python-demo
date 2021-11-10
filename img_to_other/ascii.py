@@ -85,5 +85,3 @@ if __name__ == '__main__':
         with open(OUTPUT_DEFAULT, 'w') as f:
             f.write(txt)
     print('--- done ---')
-
-
