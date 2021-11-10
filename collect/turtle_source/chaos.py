@@ -24,7 +24,7 @@ def h(x):
 
 
 def jumpto(x, y):
-    penup();
+    penup()
     goto(x, y)
 
 
