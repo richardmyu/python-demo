@@ -2,6 +2,7 @@
 
 """
 将图片（png, jpg）转换成字符"图"
+用法：py ascii.py file
 """
 
 from PIL import Image
