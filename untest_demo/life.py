@@ -258,5 +258,6 @@ def keyloop(stdscr):
 def main(stdscr):
     keyloop(stdscr)                 # Enter the main loop
 
+
 if __name__ == '__main__':
     curses.wrapper(main)
