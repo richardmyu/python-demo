@@ -1,18 +1,23 @@
 # coding: utf-8
 '''
-压缩博客相册和生成相册对应 JSON 数据
-photos 原始图片
-artwork 原始图片抹除地理等信息
-square 原始图片的剪裁版本（调整为统一 width > height）
-thumbnail 剪裁图片后再压缩
-data.json 相册的图片信息
+处理和压缩博客相册，并生成相册对应 JSON 数据
 
-创建相册
-py album_tool.py -a create
-插入单张图片
-py album_tool.py -a insert
-插入全部图片
-py album_tool.py -a insert_all
+文件夹分类:
+    photos 原始图片
+    artwork 原始图片抹除地理等信息
+    square 原始图片的剪裁版本（调整为统一 width > height）
+    thumbnail 剪裁图片后再压缩
+    data.json 相册的图片信息
+
+命令:
+    创建相册
+    py album_tool.py -a create
+
+    插入单张图片
+    py album_tool.py -a insert
+
+    插入全部图片
+    py album_tool.py -a insert_all
 '''
 
 import os
@@ -41,7 +46,6 @@ class AlbumTool(object):
         self.thumbnail = self.galleryPath + '/thumbnail/'
         self.data_json = self.galleryPath + '/data.json'
 
-    # @staticmethod
     def cut_by_ratio(self, infile, outfile, artwork):
         '''按照图片长宽进行分割
         取中间的部分，裁剪成正方形
@@ -86,6 +90,7 @@ class AlbumTool(object):
         增加对 width / height 的调换处理
         https://cloud.tencent.com/developer/article/1523050
         '''
+        # TODO: 实际结果有问题，部分旋转的图片，并非居中而是偏左显示
         exif_orientation_tag = 274
         # w, h = img.size
         if hasattr(img, '_getexif') \
