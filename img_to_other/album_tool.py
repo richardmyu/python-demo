@@ -3,7 +3,7 @@
 压缩博客相册和生成相册对应 JSON 数据
 photos 原始图片
 artwork 原始图片抹除地理等信息
-square 原始图片的剪裁版本（调整为统一 width > height）
+square 原始图片的剪裁版本(调整为统一 width > height)
 thumbnail 剪裁图片后再压缩
 data.json 相册的图片信息
 
@@ -26,7 +26,7 @@ from random import randint
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError
 
-imageBed = 'https://richyu.gitee.io/img_bed/album'
+IMAGE_BED = 'https://richyu.gitee.io/img_bed/album'
 
 
 class AlbumTool(object):
@@ -329,7 +329,7 @@ class AlbumTool(object):
                 'description': '',
                 'created': current,
                 'updated': current,
-                'image_bed': imageBed,
+                'image_bed': IMAGE_BED,
                 'items': []
             }
             with open(self.data_json, 'w', encoding='utf-8') as json_file:
