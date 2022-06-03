@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-将图片（png, jpg）转换成字符"图"
-用法：py ascii.py file
+将图片(png, jpg)转换成字符"图"
+
+命令:
+    py ascii.py file
 """
 
 from PIL import Image
@@ -22,7 +24,8 @@ args = parser.parse_args()
 
 # 输入的图片文件路径
 IMG = args.file
-IMG_NAME_ALL = ''.join(args.file.split('\\')[-1:]) if args.file.find('\\') else args.file
+IMG_NAME_ALL = ''.join(args.file.split(
+    '\\')[-1:]) if args.file.find('\\') else args.file
 IMG_NAME = ''.join(IMG_NAME_ALL.split('.')[0])
 
 # 输出字符画的宽度
@@ -35,7 +38,8 @@ HEIGHT = args.height
 OUTPUT = args.output
 OUTPUT_DEFAULT = './output_files/' + IMG_NAME + '.txt'
 
-ascii_char = list("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
+ascii_char = list(
+    "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
 # ascii_char = list("B8WMoahkbdpqwmZO0QLCJUYXzcvunxrjft")
 
 

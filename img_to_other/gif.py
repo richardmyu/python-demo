@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 """
-将动态图片（gif）转换成字符图（gif）
+将动态图片(gif)转换成字符图(gif)
 
-基本思路：
+基本思路:
     1.将 gif 图片的每一帧拆分为静态图片；
     2.将所有静态图片转换为字符图；
     3.再将所有字符图合成新 gif 图片
@@ -32,9 +32,9 @@ tmp_path = ''
 def gif2pic(gif_file, is_gray=False, scale=1, fineness=0.8):
     """拆分 gif 将每一帧处理成字符画
     :param gif_file: gif 文件
-    :param is_gray: 是否灰度模式（True: 灰度模式；False: 彩色模式）
+    :param is_gray: 是否灰度模式(True: 灰度模式；False: 彩色模式)
     :param scale: 输出字符图放缩比例，有效值 [0.5, 4]
-    :param fineness: 输出字符图字符颗粒放缩比，有效值 [0.3, 1.2]（适当地调小颗粒，使得字符图更具体，更迫近原图）
+    :param fineness: 输出字符图字符颗粒放缩比，有效值 [0.3, 1.2](适当地调小颗粒，使得字符图更具体，更迫近原图)
     """
     print('--- do gif2pic ---')
     im = Image.open(gif_file)
@@ -92,15 +92,18 @@ def img2ascii(png_img, is_gray, scale, fineness):
         im = Image.open(png_img).convert('RGBA')
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
-        print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print('File: {} line: {}'.format(
+            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
         return
     except PIL.UnidentifiedImageError as e:
         print('PIL.UnidentifiedImageError: {}'.format(e))
-        print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print('File: {} line: {}'.format(
+            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
         return
     except ValueError as e:
         print('ValueError: {}'.format(e))
-        print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print('File: {} line: {}'.format(
+            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
         return
 
     # 设定处理后的字符画大小
@@ -153,7 +156,8 @@ def img2ascii(png_img, is_gray, scale, fineness):
         for i in range(len(txt[0])):
             if is_gray:
                 # ImageDraw.text(xy, text, fill=None): 在给定位置绘制字符串
-                draw.text((i * block_x, j * block_y), txt[j][i], (119, 136, 153, 255))
+                draw.text((i * block_x, j * block_y),
+                          txt[j][i], (119, 136, 153, 255))
             else:
                 draw.text((i * block_x, j * block_y), txt[j][i], colors[j][i])
 
@@ -171,7 +175,8 @@ def pic2gif(out_name='', duration=1):
         os.chdir(tmp_path)
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
-        print('File: {} line: {}'.format(e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print('File: {} line: {}'.format(
+            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
         return
 
     # 返回 path 指定的文件夹包含的文件或文件夹的名字的列表
