@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """蒙特·卡罗方法来计算圆周率
 
-   [来源]：暂时不明
+   [来源]:不明
 """
 from random import random
 from time import perf_counter
