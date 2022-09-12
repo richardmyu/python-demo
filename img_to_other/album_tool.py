@@ -53,12 +53,15 @@ class AlbumTool(object):
         '''
         im = Image.open(infile)
         (w, h) = im.size
+
         if hasattr(ImageOps, 'exif_transpose'):
             handler_img = ImageOps.exif_transpose(im)
         else:
             handler_img = self.reset_orientation(im)
+
         handler_img.save(artwork)
         region = (0, 0, 0, 0)
+
         if w < h:
             w, h = h, w
         region = (int(w - h) / 2, 0, int(w + h) / 2, h)
@@ -68,6 +71,7 @@ class AlbumTool(object):
     def pre_cut(self, image):
         '''裁剪图片'''
         print('Cutting the photos image to square...')
+
         if not os.path.exists(self.square):
             os.makedirs(self.square)
         self.cut_by_ratio(self.photos + image, self.square +
@@ -76,8 +80,10 @@ class AlbumTool(object):
     def compress(self, image):
         '''压缩图片'''
         print('Compressing the square image to thumbnail...')
+
         if not os.path.exists(self.thumbnail):
             os.makedirs(self.thumbnail)
+
         img = Image.open(self.square + image)
         w, h = img.size
         w, h = int(w / self.scale), int(h / self.scale)
@@ -93,6 +99,7 @@ class AlbumTool(object):
         '''
         # TODO: 实际结果有问题，部分旋转的图片，并非居中而是偏左显示
         exif_orientation_tag = 274
+
         # w, h = img.size
         if hasattr(img, '_getexif') \
                 and isinstance(img._getexif(), dict) \
@@ -292,6 +299,7 @@ class AlbumTool(object):
                     continue
                 images = item['images']
                 index = items.index(item)
+
             if images:
                 for img in images:
                     if img['name'] == image:
