@@ -5,7 +5,6 @@
 files:
     photos 原始图片
     artwork 原始图片抹除地理等信息
-    square 原始图片的剪裁版本
     thumbnail 剪裁图片后再压缩
     data.json 相册的图片信息
 
@@ -19,7 +18,7 @@ command:
     插入多张图片
         py album_tool.py -a all
 
-改进：为了减少 Image.open 操作，合并了 cut 和 compress 过程；改进了 cut_and_compress 和 describe 函数；
+改进：为了减少 Image.open 操作，合并了 cut 和 compress 过程；
 '''
 
 import os
@@ -27,10 +26,8 @@ import sys
 import time
 import json
 import argparse
-from tkinter import COMMAND
 from PIL import Image
 from PIL import ImageOps
-from PIL import ExifTags
 import exifread
 from random import randint
 from geopy.geocoders import Nominatim
@@ -42,12 +39,11 @@ IMAGEBED = 'https://richyu.gitee.io/img_bed/album'
 class AlbumTool(object):
 
     def __init__(self, gallery):
-        self.scale = 4
+        self.scale = 16
         self.gallery = gallery
         self.galleryPath = 'album/' + gallery
         self.photos = self.galleryPath + '/photos/'
         self.artwork = self.galleryPath + '/artwork/'
-        # self.square = self.galleryPath + '/square/'
         self.thumbnail = self.galleryPath + '/thumbnail/'
         self.data_json = self.galleryPath + '/data.json'
 
@@ -60,25 +56,31 @@ class AlbumTool(object):
         https://zhuanlan.zhihu.com/p/85923289
         https://www.codenong.com/13872331/
         '''
-        # 只是使用转置而不是旋转(出于性能目的)
-        try:
-            image = Image.open(img)
-            for orientation in ExifTags.TAGS.keys():
-                if ExifTags.TAGS[orientation] == 'Orientation':
-                    break
-            exif = dict(image._getexif().items())
-
-            if exif[orientation] == 3:
-                image = image.transpose(Image.ROTATE_180)
-            elif exif[orientation] == 6:
-                image = image.transpose(Image.ROTATE_270)
-            elif exif[orientation] == 8:
-                image = image.transpose(Image.ROTATE_90)
-            image.save(img)
-            image.close()
-        except (AttributeError, KeyError, IndexError):
-            print('Warning: image do not have getexif')
-            pass
+        exif_orientation_tag = 274
+        if hasattr(img, '_getexif') \
+                and isinstance(img._getexif(), dict) \
+                and exif_orientation_tag in img._getexif():
+            exif_data = img._getexif()
+            orientation = exif_data[exif_orientation_tag]
+            if orientation == 1:
+                pass
+            elif orientation == 2:
+                img = img.transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 3:
+                img = img.rotate(180)
+            elif orientation == 4:
+                img = img.rotate(180).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 5:
+                img = img.rotate(-90,
+                                 expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 6:
+                img = img.rotate(-90, expand=True)
+            elif orientation == 7:
+                img = img.rotate(90,
+                                 expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 8:
+                img = img.rotate(90, expand=True)
+        return img
 
     @staticmethod
     def reverse_geocoder(geolocator, lat_lon, sleep_sec=5):
@@ -228,8 +230,6 @@ class AlbumTool(object):
         2.压缩图片
         '''
         print('    Cutting and Compressing    ')
-        (w, h) = im.size
-
         # ImageOps.exif_transpose
         # 如果图像具有 EXIF 方向标记，则返回相应地转置的新图像。
         # 否则，返回图像的副本。
@@ -238,12 +238,14 @@ class AlbumTool(object):
         else:
             handler_img = self.reset_orientation(im)
 
+        (w, h) = handler_img.size
+
         # 保存抹除 exif 信息后的 “原图”
         handler_img.save(self.artwork + image)
         region = (0, 0, 0, 0)
         if w < h:
             w, h = h, w
-        region = (int(int(w - h) / 2), 0, int(int(w + h) / 2), h)
+        region = (int(int(h - w) / 2), 0, int(int(w + h) / 2), w)
 
         # Ismage.crop((left, top, right, bottom))
         # 从图像中提取出某个矩形大小的图像。
@@ -360,6 +362,7 @@ class AlbumTool(object):
         if len(str((image)).strip()) == 0:
             image = input('Please input the image file name: ')
             image = image.strip()
+
             # 插入单张图片的时候，需要检测照片是否存在
             if not os.path.exists(self.photos + image):
                 print('Error: image ' + self.gallery + ' is not exists')

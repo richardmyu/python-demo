@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 '''
 处理和压缩博客相册，并生成相册对应 JSON 数据
 
@@ -74,8 +73,8 @@ class AlbumTool(object):
 
         if not os.path.exists(self.square):
             os.makedirs(self.square)
-        self.cut_by_ratio(self.photos + image, self.square +
-                          image, self.artwork + image)
+        self.cut_by_ratio(self.photos + image, self.square + image,
+                          self.artwork + image)
 
     def compress(self, image):
         '''压缩图片'''
@@ -121,8 +120,8 @@ class AlbumTool(object):
             elif orientation == 6:
                 img = img.rotate(-90, expand=True)
             elif orientation == 7:
-                img = img.rotate(90, expand=True).transpose(
-                    Image.FLIP_LEFT_RIGHT)
+                img = img.rotate(90,
+                                 expand=True).transpose(Image.FLIP_LEFT_RIGHT)
             elif orientation == 8:
                 img = img.rotate(90, expand=True)
         return img
@@ -201,19 +200,21 @@ class AlbumTool(object):
         try:
             # 图片的经度
             img_longitude_ref = image_map['GPS GPSLongitudeRef'].printable
-            img_longitude = image_map['GPS GPSLongitude'].printable[1:-1].replace(' ', '').replace('/', ',').split(
-                ',')
-            img_longitude = float(img_longitude[0]) + float(img_longitude[1]) / 60 + float(
-                img_longitude[2]) / float(img_longitude[3]) / 3600
+            img_longitude = image_map['GPS GPSLongitude'].printable[
+                1:-1].replace(' ', '').replace('/', ',').split(',')
+            img_longitude = float(
+                img_longitude[0]) + float(img_longitude[1]) / 60 + float(
+                    img_longitude[2]) / float(img_longitude[3]) / 3600
             if img_longitude_ref != 'E':
                 img_longitude = img_longitude * (-1)
 
             # 图片的纬度
             img_latitude_ref = image_map['GPS GPSLatitudeRef'].printable
-            img_latitude = image_map['GPS GPSLatitude'].printable[1:-1].replace(' ', '').replace('/', ',').split(
-                ',')
-            img_latitude = float(img_latitude[0]) + float(img_latitude[1]) / 60 + float(img_latitude[2]) / float(
-                img_latitude[3]) / 3600
+            img_latitude = image_map['GPS GPSLatitude'].printable[
+                1:-1].replace(' ', '').replace('/', ',').split(',')
+            img_latitude = float(
+                img_latitude[0]) + float(img_latitude[1]) / 60 + float(
+                    img_latitude[2]) / float(img_latitude[3]) / 3600
             if img_latitude_ref != 'N':
                 img_latitude = img_latitude * (-1)
         except Exception as e:
@@ -276,12 +277,7 @@ class AlbumTool(object):
             'focal_length': info['fl']
         }
 
-        item_dict = {
-            'date': info['date'][:7],
-            'images': [
-                image_dict
-            ]
-        }
+        item_dict = {'date': info['date'][:7], 'images': [image_dict]}
 
         items = []
         images = []
@@ -319,8 +315,11 @@ class AlbumTool(object):
 
         # 序列化数据结构到JSON文本
         with open(self.data_json, 'w', encoding='utf-8') as json_file:
-            json.dump(data, json_file, ensure_ascii=False,
-                      sort_keys=False, indent=4)
+            json.dump(data,
+                      json_file,
+                      ensure_ascii=False,
+                      sort_keys=False,
+                      indent=4)
 
     def create(self):
         '''创建相册
@@ -335,8 +334,8 @@ class AlbumTool(object):
             os.makedirs(self.square)
             os.makedirs(self.thumbnail)
 
-            current = time.strftime(
-                '%Y-%m-%d %H:%M-%S', time.localtime(time.time()))
+            current = time.strftime('%Y-%m-%d %H:%M-%S',
+                                    time.localtime(time.time()))
             data_dict = {
                 'name': self.gallery,
                 'cover': '',
@@ -347,8 +346,11 @@ class AlbumTool(object):
                 'items': []
             }
             with open(self.data_json, 'w', encoding='utf-8') as json_file:
-                json.dump(data_dict, json_file, ensure_ascii=False,
-                          sort_keys=False, indent=4)
+                json.dump(data_dict,
+                          json_file,
+                          ensure_ascii=False,
+                          sort_keys=False,
+                          indent=4)
             print('Gerry has created!')
 
     def insert(self):
@@ -370,7 +372,9 @@ class AlbumTool(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Album Tool')
-    parser.add_argument('-a', '--action', type=str,
+    parser.add_argument('-a',
+                        '--action',
+                        type=str,
                         help='action to be executed')
     args = parser.parse_args()
 
