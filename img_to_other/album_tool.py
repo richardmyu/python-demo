@@ -245,7 +245,11 @@ class AlbumTool(object):
         region = (0, 0, 0, 0)
         if w < h:
             w, h = h, w
-        region = (int(int(h - w) / 2), 0, int(int(w + h) / 2), w)
+            # 纵图处理
+            region = (int(int(h - w) / 2), 0, int(int(w + h) / 2), w)
+        else:
+            # 横图处理
+            region = (0, int(int(h - w) / 2), w, int(int(w + h) / 2))
 
         # Ismage.crop((left, top, right, bottom))
         # 从图像中提取出某个矩形大小的图像。
