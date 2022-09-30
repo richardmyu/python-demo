@@ -1,5 +1,10 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 '''
+@Time: 2022/09/30 16:34:15
+@Author: yum
+@Email: richardminyu@foxmail.com
+@File: album_tool.py
+
 压缩博客相册和生成相册对应 JSON 数据
 
 files:
@@ -19,6 +24,11 @@ command:
         py album_tool.py -a all
 
 改进：为了减少 Image.open 操作，合并了 cut 和 compress 过程；
+
+---
+
+2022-09-25 移除多余图片，确保一年份的图片不超过 12 张，以减少图片加载
+2022-09-26 移除相册按月分类规则
 '''
 
 import os
@@ -33,7 +43,7 @@ from random import randint
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError
 
-IMAGEBED = 'https://richyu.gitee.io/img_bed/album'
+IMAGE_URL = 'https://raw.githubusercontent.com/richardmyu/gallery/1.0.0/album'
 
 
 class AlbumTool(object):
@@ -121,7 +131,7 @@ class AlbumTool(object):
         f = open(img, 'rb')
         image_map = exifread.process_file(f)
 
-        # 照片拍摄日期-时间
+        # DATE 照片拍摄日期-时间
         try:
             img_date = image_map['Image DateTime'].printable[:10].replace(
                 ':', '-')
@@ -131,42 +141,42 @@ class AlbumTool(object):
             img_date = ''
             img_time = ''
 
-        # 设备型号
+        # MODEL 设备型号
         try:
             img_model = image_map['Image Model'].printable
         except Exception as e:
             # print('Warning: No Image Model')
             img_model = ''
 
-        # 曝光补偿 ExposureBiasValue
+        # EV 曝光补偿 ExposureBiasValue
         try:
             img_ev = image_map['EXIF ExposureBiasValue'].printable
         except Exception as e:
             # print('Warning: No EXIF ExposureBiasValue')
             img_ev = ''
 
-        # ISO感光度 ISOSpeedRatings
+        # ISO 感光度 ISOSpeedRatings
         try:
             img_iso = image_map['EXIF ISOSpeedRatings'].printable
         except Exception as e:
             # print('Warning: No EXIF ISOSpeedRatings')
             img_iso = ''
 
-        # 曝光时间/快门速度 ExposureTime
+        # ET 曝光时间/快门速度 ExposureTime
         try:
             img_et = image_map['EXIF ExposureTime'].printable
         except Exception as e:
             # print('Warning: No EXIF ExposureTime')
             img_et = ''
 
-        # 光圈系数 FNumber
+        # FN 光圈系数 FNumber
         try:
             img_fn = image_map['EXIF FNumber'].printable
         except Exception as e:
             # print('Warning: No EXIF FNumber')
             img_fn = ''
 
-        # 焦距 FocalLength
+        # FL 焦距 FocalLength
         try:
             img_fl = image_map['EXIF FocalLength'].printable
         except Exception as e:
@@ -285,10 +295,9 @@ class AlbumTool(object):
             'f_number': img_exit_info['fn'],
             'focal_length': img_exit_info['fl']
         }
-        item_dict = {'date': img_exit_info['date'][:7], 'images': [image_dict]}
+
+        # img lit
         items = []
-        images = []
-        index = 0
         current = time.strftime('%Y-%m-%d %H:%M-%S',
                                 time.localtime(time.time()))
         with open(self.data_json, 'r', encoding='utf-8') as json_file:
@@ -297,22 +306,13 @@ class AlbumTool(object):
 
         if items:
             for item in items:
-                if item['date'] != img_exit_info['date'][:7]:
-                    continue
-                images = item['images']
-                index = items.index(item)
-            if images:
-                for img in images:
-                    if img['name'] == image:
-                        print('The file ' + image + ' already exists')
-                        return
-                images.insert(0, image_dict)
-                images.sort(key=lambda image: image['date'], reverse=True)
-                items[index]['images'] = images
-            else:
-                items.insert(0, item_dict)
+                if item['name'] == image:
+                    # 若存在，则覆盖原信息
+                    item = image_dict
+                    return
+            items.insert(0, image_dict)
         else:
-            items.insert(0, item_dict)
+            items.insert(0, image_dict)
 
         items.sort(key=lambda item: item['date'], reverse=True)
         data['items'] = items
@@ -344,7 +344,7 @@ class AlbumTool(object):
                 'description': '',
                 'created': current,
                 'updated': current,
-                'image_bed': IMAGEBED,
+                'image_url': IMAGE_URL,
                 'items': []
             }
             with open(self.data_json, 'w', encoding='utf-8') as json_file:
