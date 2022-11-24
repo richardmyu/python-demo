@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-计算圆台体积
+计算圆台体积去除中间圆柱后的体积
 """
 import math
 
@@ -10,7 +10,9 @@ def frustumV(a, d, h):
     r2 = a + d / 2  # 下底
     ss = math.pow(r1, 2) + r1 * r2 + math.pow(r2, 2)
     v1 = math.pi * ss * h / 3
+    # 以上底为底的圆柱体积
     v2 = math.pi * math.pow(r1, 2) * h
+    # 单位换到 m^3，保留三位小数
     rm = round((v1 - v2) / 1000000, 3)
 
     return rm
