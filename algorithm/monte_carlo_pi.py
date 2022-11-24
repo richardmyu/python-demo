@@ -3,6 +3,7 @@
 
    [来源]:不明
 """
+
 from random import random
 from time import perf_counter
 
@@ -13,7 +14,7 @@ def calculate_pi(n=100):
     start = perf_counter()
     for i in range(1, n * n + 1):
         x, y = random(), random()
-        dist = pow(x ** 2 + y ** 2, 0.5)
+        dist = pow(x**2 + y**2, 0.5)
         if dist <= 1.0:
             hits += 1
     pi = (hits * 4) / (n * n)
