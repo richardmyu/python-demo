@@ -12,5 +12,6 @@
 
 */__pycache__/
 venv/
-**/ll_env/
+ll_env/
+**/*/ll_env/
 **/*/*.txt
