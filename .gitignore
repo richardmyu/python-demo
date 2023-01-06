@@ -1,18 +1,4 @@
-!**/*/requirements.txt
-.idea
-.vscode
-.vs
-.git
-**/img
-**/tmp_*
-**/test*
-**/*.txt
-**/*.png
-
 # python
-
 */__pycache__/
 venv/
 ll_env/
-**/*/ll_env/
-**/*/*.txt
