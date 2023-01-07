@@ -44,6 +44,7 @@ def get_words_count_dict():
 
     # 将分词数组转化为pandas数据结构
     # words_count = df.groupby(by=['segment'])['segment'].agg({"计数": numpy.size})
+    # https://stackoverflow.com/questions/60229375/solution-for-specificationerror-nested-renamer-is-not-supported-while-agg-alo
     words_count = df.groupby(by=['segment'])['segment'].agg(count=numpy.size)
 
     # 按词分组，计算每个词的个数
@@ -56,15 +57,17 @@ def get_words_count_dict():
 words_count = get_words_count_dict()
 # 获得词语和频数
 
+# 获得词云对象，设定词云背景颜色及其图片和字体
 bimg = imread('candle.jpg')
 
 # 读取我们想要生成词云的模板图片
 wordcloud = WordCloud(background_color='white', mask=bimg, font_path='simhei.ttf')
-# 获得词云对象，设定词云背景颜色及其图片和字体
 
-# 如果你的背景色是透明的，请用这两条语句替换上面两条
-# bimg = imread(candle.jpeg')
-# wordcloud = WordCloud(background_color=None, mode='RGBA', mask=bimg, font_path='simhei.ttc')
+# 如果背景色是透明的，请用这条语句替换上面
+# wordcloud = WordCloud(
+#     background_color=None, mode='RGBA', mask=bimg, font_path='simhei.ttf'
+# )
+
 words = words_count.set_index("segment").to_dict()
 
 # 将词语和频率转为字典
