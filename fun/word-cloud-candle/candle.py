@@ -43,10 +43,11 @@ def get_words_count_dict():
     df = pandas.DataFrame({'segment': segment})
 
     # 将分词数组转化为pandas数据结构
-    words_count = df.groupby(by=['segment'])['segment'].agg({"计数": numpy.size})
+    # words_count = df.groupby(by=['segment'])['segment'].agg({"计数": numpy.size})
+    words_count = df.groupby(by=['segment'])['segment'].agg(count=numpy.size)
 
     # 按词分组，计算每个词的个数
-    words_count = words_count.reset_index().sort_values(by="计数", ascending=False)
+    words_count = words_count.reset_index().sort_values(by="count", ascending=False)
 
     # reset_index是为了保留segment字段，排序，数字大的在前面
     return words_count
@@ -58,7 +59,7 @@ words_count = get_words_count_dict()
 bimg = imread('candle.jpg')
 
 # 读取我们想要生成词云的模板图片
-wordcloud = WordCloud(background_color='white', mask=bimg, font_path='simsun.ttc')
+wordcloud = WordCloud(background_color='white', mask=bimg, font_path='simhei.ttf')
 # 获得词云对象，设定词云背景颜色及其图片和字体
 
 # 如果你的背景色是透明的，请用这两条语句替换上面两条
@@ -67,7 +68,7 @@ wordcloud = WordCloud(background_color='white', mask=bimg, font_path='simsun.ttc
 words = words_count.set_index("segment").to_dict()
 
 # 将词语和频率转为字典
-wordcloud = wordcloud.fit_words(words["计数"])
+wordcloud = wordcloud.fit_words(words["count"])
 
 # 将词语及频率映射到词云对象上
 bimgColors = ImageColorGenerator(bimg)
