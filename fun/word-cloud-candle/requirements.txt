@@ -1,0 +1,6 @@
+matplot
+wordcloud
+jieba
+pandas
+numpy
+imageio
