@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+绘制悼念的词云蜡烛
+
+https://pythondict.com/python-data-analyze/python-paint-mourn-candle/
+"""
 
 import jieba
 import numpy

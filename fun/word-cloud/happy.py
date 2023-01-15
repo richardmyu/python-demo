@@ -2,9 +2,7 @@
 """
 生成指定名称的生日快乐词云。词云形状由指定背景图决定。
 
-source:
-    Python 一键生成漂亮的生日快乐词云！
-    https://pythondict.com/life-intelligent/tools/python-happy-birthday/
+https://pythondict.com/life-intelligent/tools/python-happy-birthday/
 
 command
     py happy.py image name

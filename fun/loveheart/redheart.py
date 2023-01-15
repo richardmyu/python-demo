@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""
-作者：李狗嗨
-链接：https://www.zhihu.com/question/466165757/answer/1954034386
-来源：知乎
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-"""
+"""3维红心"""
 
 import numpy as np
 from skimage import measure
@@ -13,7 +8,11 @@ import matplotlib.pyplot as plt
 
 
 def heart_line(x, y, z):
-    return (x ** 2 + (9 / 4) * y ** 2 + z ** 2 - 1) ** 3 - x ** 2 * z ** 3 - (1 / 9) * y ** 2 * z ** 3
+    return (
+        (x**2 + (9 / 4) * y**2 + z**2 - 1) ** 3
+        - x**2 * z**3
+        - (1 / 9) * y**2 * z**3
+    )
 
 
 a, b, c = np.mgrid[-2:2:100j, -2:2:100j, -2:2:100j]

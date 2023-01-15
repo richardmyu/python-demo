@@ -1,5 +1,6 @@
-# !/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""心形字符串"""
 
 import string
 
@@ -18,7 +19,9 @@ s.insert(6, " ")
 
 string = "".join(s)
 
+# 心形的构成字符
 sourceStr = 'o-0'
+
 # print(string)
 
 # print('\n'.join([''.join([('Love'[(x - y) % len('Love')] if ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3 - (
@@ -27,8 +30,23 @@ sourceStr = 'o-0'
 # print('\n'.join([''.join([('SB'[(x - y) % len('SB')] if ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3 - (
 #     x * 0.05) ** 2 * (y * 0.1) ** 3 <= 0 else ' ') for x in range(-30, 30)]) for y in range(30, -30, -1)]))
 
-txt = '\n'.join([''.join([(sourceStr[(x - y) % len(sourceStr)] if ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3 - (
-    x * 0.05) ** 2 * (y * 0.1) ** 3 <= 0 else ' ') for x in range(-30, 30)]) for y in range(30, -30, -1)])
+txt = '\n'.join(
+    [
+        ''.join(
+            [
+                (
+                    sourceStr[(x - y) % len(sourceStr)]
+                    if ((x * 0.05) ** 2 + (y * 0.1) ** 2 - 1) ** 3
+                    - (x * 0.05) ** 2 * (y * 0.1) ** 3
+                    <= 0
+                    else ' '
+                )
+                for x in range(-30, 30)
+            ]
+        )
+        for y in range(30, -30, -1)
+    ]
+)
 
 with open("output.txt", "w") as f:
     f.write(txt)

@@ -1,0 +1,56 @@
+Source path:... .\test-pysnooper.py
+Starting var:.. number = 6
+22:57:40.050737 call        15 def number_to_bits(number):
+22:57:40.051734 line        16     if number:
+22:57:40.051734 line        17         bits = []
+New var:....... bits = []
+22:57:40.051734 line        18         while number:
+22:57:40.052730 line        19             number, remainder = divmod(number, 2)
+Modified var:.. number = 3
+New var:....... remainder = 0
+22:57:40.052730 line        20             bits.insert(0, remainder)
+Modified var:.. bits = [0]
+22:57:40.052730 line        18         while number:
+22:57:40.053727 line        19             number, remainder = divmod(number, 2)
+Modified var:.. number = 1
+Modified var:.. remainder = 1
+22:57:40.053727 line        20             bits.insert(0, remainder)
+Modified var:.. bits = [1, 0]
+22:57:40.053727 line        18         while number:
+22:57:40.054723 line        19             number, remainder = divmod(number, 2)
+Modified var:.. number = 0
+22:57:40.054723 line        20             bits.insert(0, remainder)
+Modified var:.. bits = [1, 1, 0]
+22:57:40.054723 line        18         while number:
+22:57:40.054723 line        21         return bits
+22:57:40.055720 return      21         return bits
+Return value:.. [1, 1, 0]
+Elapsed time: 00:00:00.004983
+Source path:... .\test-pysnooper.py
+Starting var:.. number = 6
+15:59:15.655850 call        15 def number_to_bits(number):
+15:59:15.656847 line        16     if number:
+15:59:15.656847 line        17         bits = []
+New var:....... bits = []
+15:59:15.657844 line        18         while number:
+15:59:15.657844 line        19             number, remainder = divmod(number, 2)
+Modified var:.. number = 3
+New var:....... remainder = 0
+15:59:15.657844 line        20             bits.insert(0, remainder)
+Modified var:.. bits = [0]
+15:59:15.657844 line        18         while number:
+15:59:15.658840 line        19             number, remainder = divmod(number, 2)
+Modified var:.. number = 1
+Modified var:.. remainder = 1
+15:59:15.658840 line        20             bits.insert(0, remainder)
+Modified var:.. bits = [1, 0]
+15:59:15.658840 line        18         while number:
+15:59:15.659837 line        19             number, remainder = divmod(number, 2)
+Modified var:.. number = 0
+15:59:15.659837 line        20             bits.insert(0, remainder)
+Modified var:.. bits = [1, 1, 0]
+15:59:15.659837 line        18         while number:
+15:59:15.659837 line        21         return bits
+15:59:15.659837 return      21         return bits
+Return value:.. [1, 1, 0]
+Elapsed time: 00:00:00.004984
