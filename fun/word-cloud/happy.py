@@ -5,7 +5,9 @@
 https://pythondict.com/life-intelligent/tools/python-happy-birthday/
 
 command
-    py happy.py image name
+    ./ll_env/Scripts/activate
+
+    py happy.py image new_image_name
 """
 import multidict
 import fire
@@ -13,6 +15,9 @@ import matplotlib.pyplot as plt
 import numpy.random as nr
 from imageio import imread
 from wordcloud import WordCloud, ImageColorGenerator
+
+# Doraemon
+# Nobita
 
 sub_title_start = '哆啦'
 sub_title_end = 'A梦'
@@ -68,6 +73,7 @@ def gen_happy_birthday_cloud(file, name):
     bimgColors = ImageColorGenerator(bimg)
 
     # 渲染
+    plt.figure(figsize=(6, 6))
     plt.axis('off')
     plt.imshow(wordcloud.recolor(color_func=bimgColors))
     plt.savefig(name + '.png')

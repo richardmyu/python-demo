@@ -81,6 +81,9 @@ wordcloud = wordcloud.fit_words(words["count"])
 # 将词语及频率映射到词云对象上
 bimgColors = ImageColorGenerator(bimg)
 
+# 设置画布大小
+plt.figure(figsize=(6, 6))
+
 # 生成颜色
 plt.axis("off")
 
