@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 https://www.runoob.com/matplotlib/matplotlib-grid.html
 matplotlib.pyplot.grid(b=None, which='major', axis='both', )

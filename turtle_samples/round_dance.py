@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """      turtle-example-suite:
 
          tdemo_round_dance.py

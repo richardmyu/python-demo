@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from turtle import *
 
 color('red', 'yellow')

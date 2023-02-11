@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from turtle import *
 import random
 
@@ -16,7 +14,9 @@ def draw_path(path):
     for symbol in path:
         if symbol == 'f':
             colormode(255)
-            color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            color(
+                random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+            )
             fd(length)
         elif symbol == '+':
             lt(angle)
@@ -36,10 +36,7 @@ def apply_path(rules, path):
     return path
 
 
-rules = {
-    'x': '+yf-xfx-fy+',
-    'y': '-xf+yfy+fx-'
-}
+rules = {'x': '+yf-xfx-fy+', 'y': '-xf+yfy+fx-'}
 path = 'x'
 speed(0)
 for i in range(7):

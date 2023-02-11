@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 
          sorting_animation.py
@@ -21,7 +19,6 @@ import random
 
 
 class Block(Turtle):
-
     def __init__(self, size):
         self.size = size
         Turtle.__init__(self, shape="square", visible=False)
@@ -41,10 +38,8 @@ class Block(Turtle):
 
 
 class Shelf(list):
-
     def __init__(self, y):
-        """create a shelf. y is y-position of first block
-        """
+        """create a shelf. y is y-position of first block"""
         self.y = y
         self.x = -150
 

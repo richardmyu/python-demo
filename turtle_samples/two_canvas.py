@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """turtledemo.two_canvases
 
 Use TurtleScreen and RawTurtle to draw on two

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 '''
 @Time: 2022/09/30 16:32:55
 @Author: yum
@@ -16,9 +15,11 @@ from skimage import io
 
 
 def img_resize(img, scale=0.5, interpolation=cv.INTER_LINEAR):
-    img = cv.resize(img,
-                    (int(img.shape[1] * scale), int(img.shape[0] * scale)),
-                    interpolation=interpolation)
+    img = cv.resize(
+        img,
+        (int(img.shape[1] * scale), int(img.shape[0] * scale)),
+        interpolation=interpolation,
+    )
     return img
 
 

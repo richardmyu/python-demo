@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*_
-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
 import subprocess
@@ -7,12 +5,15 @@ import subprocess
 
 # ---------------------------------------------------------------------
 
+
 class ServerException(Exception):
     """服务器内部错误"""
+
     pass
 
 
 # ---------------------------------------------------------------------
+
 
 class base_case(object):
     """条件处理基类"""
@@ -39,6 +40,7 @@ class base_case(object):
 
 # ---------------------------------------------------------------------
 
+
 class case_no_file(base_case):
     """路径不存在"""
 
@@ -50,6 +52,7 @@ class case_no_file(base_case):
 
 
 # ---------------------------------------------------------------------
+
 
 class case_existing_file(base_case):
     """路径是文件"""
@@ -63,6 +66,7 @@ class case_existing_file(base_case):
 
 # ---------------------------------------------------------------------
 
+
 class case_always_fail(base_case):
     """所有情况都不符合时的默认处理类"""
 
@@ -75,6 +79,7 @@ class case_always_fail(base_case):
 
 # ---------------------------------------------------------------------
 
+
 class case_cgi_file(base_case):
     """脚本文件处理"""
 
@@ -83,8 +88,7 @@ class case_cgi_file(base_case):
         handler.send_content(data)
 
     def test(self, handler):
-        return os.path.isfile(handler.full_path) and \
-               handler.full_path.endswith('.py')
+        return os.path.isfile(handler.full_path) and handler.full_path.endswith('.py')
 
     def act(self, handler):
         self.run_cgi(handler)
@@ -92,10 +96,12 @@ class case_cgi_file(base_case):
 
 # ---------------------------------------------------------------------
 
+
 class case_directory_index_file(base_case):
     def test(self, handler):
-        return os.path.isdir(handler.full_path) and \
-               os.path.isfile(self.index_path(handler))
+        return os.path.isdir(handler.full_path) and os.path.isfile(
+            self.index_path(handler)
+        )
 
     def act(self, handler):
         self.handle_file(handler, self.index_path(handler))
@@ -103,13 +109,17 @@ class case_directory_index_file(base_case):
 
 # ---------------------------------------------------------------------
 
+
 class RequestHandler(BaseHTTPRequestHandler):
     """请求路径合法则返回相应处理，否则返回错误页面"""
-    Cases = [case_no_file(),
-             case_cgi_file(),  # 注意顺序
-             case_existing_file(),
-             case_directory_index_file(),
-             case_always_fail()]
+
+    Cases = [
+        case_no_file(),
+        case_cgi_file(),  # 注意顺序
+        case_existing_file(),
+        case_directory_index_file(),
+        case_always_fail(),
+    ]
 
     # 错误页面模板
     Error_Page = """\

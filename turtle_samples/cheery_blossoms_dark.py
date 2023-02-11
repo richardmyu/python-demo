@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from turtle import *
 from random import *
 from math import *

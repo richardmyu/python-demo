@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Rows 快速操作 csv 文件
 

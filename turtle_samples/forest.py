@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """     turtlegraphics-example-suite:
 
              tdemo_forest.py
@@ -22,9 +20,10 @@ def symRandom(n):
 
 
 def randomize(branchlist, angledist, sizedist):
-    return [(angle + symRandom(angledist),
-             sizefactor * 1.01 ** symRandom(sizedist))
-            for angle, sizefactor in branchlist]
+    return [
+        (angle + symRandom(angledist), sizefactor * 1.01 ** symRandom(sizedist))
+        for angle, sizefactor in branchlist
+    ]
 
 
 def randomfd(t, distance, parts, angledist):
@@ -41,9 +40,11 @@ def tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5)
         brs = []
         for t, branchlist in list(zip(tlist, branchlists)):
             t.pensize(size * widthfactor)
-            t.pencolor(255 - (180 - 11 * level + symRandom(15)),
-                       180 - 11 * level + symRandom(15),
-                       0)
+            t.pencolor(
+                255 - (180 - 11 * level + symRandom(15)),
+                180 - 11 * level + symRandom(15),
+                0,
+            )
             t.pendown()
             randomfd(t, size, level, angledist)
             yield 1
@@ -52,8 +53,9 @@ def tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5)
                 lst.append(t.clone())
                 brs.append(randomize(branchlist, angledist, sizedist))
                 t.right(angle)
-        for x in tree(lst, size * sizefactor, level - 1, widthfactor, brs,
-                      angledist, sizedist):
+        for x in tree(
+            lst, size * sizefactor, level - 1, widthfactor, brs, angledist, sizedist
+        ):
             yield None
 
 

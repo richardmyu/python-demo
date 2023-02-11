@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """       turtle-example-suite:
 
          tdemo_minimal_hanoi.py
@@ -26,7 +24,7 @@ class Disc(Turtle):
         Turtle.__init__(self, shape="square", visible=False)
         self.pu()
         self.shapesize(1.5, n * 1.5, 2)  # square-->rectangle
-        self.fillcolor(n / 6., 0, 1 - n / 6.)
+        self.fillcolor(n / 6.0, 0, 1 - n / 6.0)
         self.st()
 
 
@@ -60,16 +58,15 @@ def play():
     clear()
     try:
         hanoi(6, t1, t2, t3)
-        write("press STOP button to exit",
-              align="center", font=("Courier", 16, "bold"))
+        write("press STOP button to exit", align="center", font=("Courier", 16, "bold"))
     except Terminator:
         pass  # turtledemo user pressed STOP
 
 
 def main():
     global t1, t2, t3
-    ht();
-    penup();
+    ht()
+    penup()
     goto(0, -225)  # writer turtle
     t1 = Tower(-250)
     t2 = Tower(0)
@@ -78,8 +75,7 @@ def main():
     for i in range(6, 0, -1):
         t1.push(Disc(i))
     # prepare spartanic user interface ;-)
-    write("press spacebar to start game",
-          align="center", font=("Courier", 16, "bold"))
+    write("press spacebar to start game", align="center", font=("Courier", 16, "bold"))
     onkey(play, "space")
     listen()
     return "EVENTLOOP"

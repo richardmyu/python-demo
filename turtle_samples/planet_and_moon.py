@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """       turtle-example-suite:
 
         tdemo_planets_and_moon.py
@@ -75,6 +73,7 @@ class Star(Turtle):
 
 
 ## create compound yellow/blue turtleshape for planets
+
 
 def main():
     s = Turtle()

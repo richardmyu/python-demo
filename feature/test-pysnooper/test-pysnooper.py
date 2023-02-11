@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 PySnooper 学习
 
@@ -10,6 +8,7 @@ import pysnooper
 
 # 输出到终端
 # @pysnooper.snoop()
+
 
 # 输出到文件
 @pysnooper.snoop('./log/test-pysnooper.log')

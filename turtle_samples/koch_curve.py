@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from turtle import *
 import random
 
@@ -15,7 +13,9 @@ def draw_path(path):
     for symbol in path:
         if symbol == 'F':
             colormode(255)
-            color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            color(
+                random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+            )
             forward(length)
         elif symbol == '-':
             right(angle)

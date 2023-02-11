@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """      turtle-example-suite:
 
           tdemo_wikipedia3.py
@@ -28,11 +26,11 @@ def mn_eck(p, ne, sz):
         turtlelist.append(q)
         p = q
     for i in range(ne):
-        c = abs(ne / 2.0 - i) / (ne * .7)
+        c = abs(ne / 2.0 - i) / (ne * 0.7)
         # let those ne turtles make a step
         # in parallel:
         for t in turtlelist:
-            t.rt(360. / ne)
+            t.rt(360.0 / ne)
             t.pencolor(1 - c, 0, c)
             t.fd(sz)
 

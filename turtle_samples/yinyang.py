@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """       turtle-example-suite:
 
             tdemo_yinyang.py
@@ -19,10 +17,10 @@ def yin(radius, color1, color2):
     width(3)
     color("black", color1)
     begin_fill()
-    circle(radius / 2., 180)
+    circle(radius / 2.0, 180)
     circle(radius, 180)
     left(180)
-    circle(-radius / 2., 180)
+    circle(-radius / 2.0, 180)
     end_fill()
     left(90)
     up()

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """      turtle-example-suite:
 
         tdemo_bytedesign.py
@@ -30,7 +28,6 @@ from time import perf_counter as clock
 # wrapper for any additional drawing routines
 # that need to know about each other
 class Designer(Turtle):
-
     def design(self, home_pos, scale):
         self.up()
         for i in range(5):
@@ -113,14 +110,14 @@ class Designer(Turtle):
             return
         self.forward(side)
         self.left(ang)
-        self.pentl(side - (.38 * scale), ang, scale)
+        self.pentl(side - (0.38 * scale), ang, scale)
 
     def pentr(self, side, ang, scale):
         if side < (2 * scale):
             return
         self.forward(side)
         self.right(ang)
-        self.pentr(side - (.38 * scale), ang, scale)
+        self.pentr(side - (0.38 * scale), ang, scale)
 
     def tripolyr(self, side, scale):
         if side < (4 * scale):
@@ -131,7 +128,7 @@ class Designer(Turtle):
         self.right(111)
         self.forward(side / 1.3)
         self.right(146)
-        self.tripolyr(side * .75, scale)
+        self.tripolyr(side * 0.75, scale)
 
     def tripolyl(self, side, scale):
         if side < (4 * scale):
@@ -142,7 +139,7 @@ class Designer(Turtle):
         self.left(111)
         self.forward(side / 1.3)
         self.left(146)
-        self.tripolyl(side * .75, scale)
+        self.tripolyl(side * 0.75, scale)
 
     def centerpiece(self, s, a, scale):
         self.forward(s)

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 AutoGrad 学习
 

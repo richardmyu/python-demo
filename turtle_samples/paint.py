@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """       turtle-example-suite:
 
             tdemo_paint.py
@@ -42,7 +40,7 @@ def main():
     global colors
     shape("circle")
     resizemode("user")
-    shapesize(.5)
+    shapesize(0.5)
     width(3)
     colors = ["red", "green", "blue", "yellow"]
     color(colors[0])

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 https://www.runoob.com/matplotlib/matplotlib-line.html
 """

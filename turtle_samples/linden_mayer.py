@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """       turtle-example-suite:
 
         xtx_lindenmayer_indian.py
@@ -79,6 +77,7 @@ def main():
     draw(drawing, snake_rules)
 
     from time import sleep
+
     sleep(3)
 
     ################################
@@ -91,6 +90,7 @@ def main():
 
     def B():
         from math import sqrt
+
         color("black")
         l = 5 / sqrt(2)
         forward(l)

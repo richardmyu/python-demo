@@ -1,5 +1,3 @@
-# -*- coding=utf-8 -*-
-
 """
 将静态图片(png, jpg)转换成字符图(png)
 """
@@ -48,18 +46,30 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
         im = Image.open(img).convert('RGBA')
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
-        print('File: {} line: {}'.format(
-            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print(
+            'File: {} line: {}'.format(
+                e.__traceback__.tb_frame.f_globals['__file__'],
+                e.__traceback__.tb_lineno,
+            )
+        )
         return
     except PIL.UnidentifiedImageError as e:
         print('PIL.UnidentifiedImageError: {}'.format(e))
-        print('File: {} line: {}'.format(
-            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print(
+            'File: {} line: {}'.format(
+                e.__traceback__.tb_frame.f_globals['__file__'],
+                e.__traceback__.tb_lineno,
+            )
+        )
         return
     except ValueError as e:
         print('ValueError: {}'.format(e))
-        print('File: {} line: {}'.format(
-            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print(
+            'File: {} line: {}'.format(
+                e.__traceback__.tb_frame.f_globals['__file__'],
+                e.__traceback__.tb_lineno,
+            )
+        )
         return
 
     # 设定处理后的字符画大小
@@ -112,8 +122,7 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
         for i in range(len(txt[0])):
             if is_gray:
                 # ImageDraw.text(xy, text, fill=None): 在给定位置绘制字符串
-                draw.text((i * block_x, j * block_y),
-                          txt[j][i], (119, 136, 153, 255))
+                draw.text((i * block_x, j * block_y), txt[j][i], (119, 136, 153, 255))
             else:
                 draw.text((i * block_x, j * block_y), txt[j][i], colors[j][i])
     os.chdir(r'.\img')

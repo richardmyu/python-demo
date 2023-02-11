@@ -90,5 +90,7 @@ plt.axis("off")
 # 关闭坐标轴
 plt.imshow(wordcloud.recolor(color_func=bimgColors))
 
+plt.savefig('word-cloud-candle.png')
+
 # 绘色
 plt.show()

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import turtle
 
 top_level = 8  # 一共递归6层

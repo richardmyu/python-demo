@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from turtle import *
 import time
 import turtle as t
@@ -99,10 +97,7 @@ gotopos(-650, -100)
 length = 6
 path = 'F'
 angle = 27
-rules = {
-    'F': 'aFF[b-F++F][c+F--F]c++F--F',
-    'X': 'aFF+[b+F]+[c-F]'
-}
+rules = {'F': 'aFF[b-F++F][c+F--F]c++F--F', 'X': 'aFF+[b+F]+[c-F]'}
 
 for _ in range(4):
     path = apply_rules(path, rules)

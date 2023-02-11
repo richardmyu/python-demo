@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 将动态图片(gif)转换成字符图(gif)
 
@@ -92,18 +90,30 @@ def img2ascii(png_img, is_gray, scale, fineness):
         im = Image.open(png_img).convert('RGBA')
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
-        print('File: {} line: {}'.format(
-            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print(
+            'File: {} line: {}'.format(
+                e.__traceback__.tb_frame.f_globals['__file__'],
+                e.__traceback__.tb_lineno,
+            )
+        )
         return
     except PIL.UnidentifiedImageError as e:
         print('PIL.UnidentifiedImageError: {}'.format(e))
-        print('File: {} line: {}'.format(
-            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print(
+            'File: {} line: {}'.format(
+                e.__traceback__.tb_frame.f_globals['__file__'],
+                e.__traceback__.tb_lineno,
+            )
+        )
         return
     except ValueError as e:
         print('ValueError: {}'.format(e))
-        print('File: {} line: {}'.format(
-            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print(
+            'File: {} line: {}'.format(
+                e.__traceback__.tb_frame.f_globals['__file__'],
+                e.__traceback__.tb_lineno,
+            )
+        )
         return
 
     # 设定处理后的字符画大小
@@ -156,8 +166,7 @@ def img2ascii(png_img, is_gray, scale, fineness):
         for i in range(len(txt[0])):
             if is_gray:
                 # ImageDraw.text(xy, text, fill=None): 在给定位置绘制字符串
-                draw.text((i * block_x, j * block_y),
-                          txt[j][i], (119, 136, 153, 255))
+                draw.text((i * block_x, j * block_y), txt[j][i], (119, 136, 153, 255))
             else:
                 draw.text((i * block_x, j * block_y), txt[j][i], colors[j][i])
 
@@ -165,7 +174,7 @@ def img2ascii(png_img, is_gray, scale, fineness):
 
 
 def pic2gif(out_name='', duration=1):
-    """ 读取 tmp 目录下文件合成 gif
+    """读取 tmp 目录下文件合成 gif
     :param out_name: 合成图片名称
     :param duration: gif 图像间隔时间
     """
@@ -175,8 +184,12 @@ def pic2gif(out_name='', duration=1):
         os.chdir(tmp_path)
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
-        print('File: {} line: {}'.format(
-            e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno))
+        print(
+            'File: {} line: {}'.format(
+                e.__traceback__.tb_frame.f_globals['__file__'],
+                e.__traceback__.tb_lineno,
+            )
+        )
         return
 
     # 返回 path 指定的文件夹包含的文件或文件夹的名字的列表

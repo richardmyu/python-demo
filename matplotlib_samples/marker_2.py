@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 fmt = '[marker][line][color]'
 """
+
 import matplotlib.pyplot as plt
 import numpy as np
 

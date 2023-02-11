@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 将图片(png, jpg)转换成字符"图"
 
@@ -24,8 +22,9 @@ args = parser.parse_args()
 
 # 输入的图片文件路径
 IMG = args.file
-IMG_NAME_ALL = ''.join(args.file.split(
-    '\\')[-1:]) if args.file.find('\\') else args.file
+IMG_NAME_ALL = (
+    ''.join(args.file.split('\\')[-1:]) if args.file.find('\\') else args.file
+)
 IMG_NAME = ''.join(IMG_NAME_ALL.split('.')[0])
 
 # 输出字符画的宽度
@@ -36,10 +35,11 @@ HEIGHT = args.height
 
 # 输出字符画的路径
 OUTPUT = args.output
-OUTPUT_DEFAULT = './output_files/' + IMG_NAME + '.txt'
+OUTPUT_DEFAULT = IMG_NAME + '.txt'
 
 ascii_char = list(
-    "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
+    "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
+)
 # ascii_char = list("B8WMoahkbdpqwmZO0QLCJUYXzcvunxrjft")
 
 
@@ -63,7 +63,6 @@ def get_char(r, g, b, alpha=255):
 
 
 if __name__ == '__main__':
-
     # 打开并调整图片的宽和高
     im = Image.open(IMG)
     im = im.resize((WIDTH, HEIGHT), Image.NEAREST)

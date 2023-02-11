@@ -1,18 +1,26 @@
-# -*- coding: utf-8 -*-
-
-# import turtle_source as t
 from turtle import *
 import time
 
 speed(0)
 colormode(255)
-clrs = ["MidnightBlue", "Navy", "DarkBlue", "MediumBlue", "RoyalBlue", "MediumSlateBlue", "CornflowerBlue",
-        "DodgerBlue", "DeepskyBlue", "LightSkyBlue", "SkyBlue", "LightBlue"]
+clrs = [
+    "MidnightBlue",
+    "Navy",
+    "DarkBlue",
+    "MediumBlue",
+    "RoyalBlue",
+    "MediumSlateBlue",
+    "CornflowerBlue",
+    "DodgerBlue",
+    "DeepskyBlue",
+    "LightSkyBlue",
+    "SkyBlue",
+    "LightBlue",
+]
 
 time.sleep(2)
 
 for j in range(120):
-
     cn = 0
     c = 30
     f = 70

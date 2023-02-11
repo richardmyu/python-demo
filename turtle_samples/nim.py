@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """      turtle-example-suite:
 
             tdemo_nim.py
@@ -139,10 +137,10 @@ class NimView(object):
         self.screen.tracer(False)
         self.writer.clear()
         if msg2 is not None:
-            self.writer.goto(0, - SCREENHEIGHT // 2 + 48)
+            self.writer.goto(0, -SCREENHEIGHT // 2 + 48)
             self.writer.pencolor("red")
             self.writer.write(msg2, align="center", font=("Courier", 18, "bold"))
-        self.writer.goto(0, - SCREENHEIGHT // 2 + 20)
+        self.writer.goto(0, -SCREENHEIGHT // 2 + 20)
         self.writer.pencolor("black")
         self.writer.write(msg1, align="center", font=("Courier", 14, "bold"))
         self.screen.tracer(True)
@@ -186,7 +184,6 @@ class NimView(object):
 
 
 class NimController(object):
-
     def __init__(self, game):
         self.game = game
         self.sticks = game.view.sticks

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import turtle as t
 
 aj = t.Pen()

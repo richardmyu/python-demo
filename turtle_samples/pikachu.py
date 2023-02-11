@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import turtle
 
 
@@ -9,7 +8,6 @@ def getPosition(x, y):
 
 
 class Pikachu:
-
     def __init__(self):
         self.t = turtle.Turtle()
         t = self.t

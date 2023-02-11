@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
+'''File: tdemo_chaos.py
+Author: Gregor Lingl
+Date: 2009-06-24
 
-# File: tdemo_chaos.py
-# Author: Gregor Lingl
-# Date: 2009-06-24
-
-# A demonstration of chaos
+A demonstration of chaos
+'''
 
 from turtle import *
 
@@ -16,7 +15,7 @@ def f(x):
 
 
 def g(x):
-    return 3.9 * (x - x ** 2)
+    return 3.9 * (x - x**2)
 
 
 def h(x):

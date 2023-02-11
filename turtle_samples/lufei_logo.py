@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import turtle as t
 
 # 黄底帽子

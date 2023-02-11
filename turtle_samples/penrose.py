@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """       xturtle-example-suite:
 
           xtx_kites_and_darts.py
@@ -20,7 +18,7 @@ from turtle import *
 from math import cos, pi
 from time import perf_counter as clock, sleep
 
-f = (5 ** 0.5 - 1) / 2.0  # (sqrt(5)-1)/2 -- golden ratio
+f = (5**0.5 - 1) / 2.0  # (sqrt(5)-1)/2 -- golden ratio
 d = 2 * cos(3 * pi / 10)
 
 
@@ -95,7 +93,7 @@ def inflatedart(l, n):
 
 def draw(l, n, th=2):
     clear()
-    l = l * f ** n
+    l = l * f**n
     shapesize(l / 100.0, l / 100.0, th)
     for k in tiledict:
         h, x, y = k
@@ -181,8 +179,7 @@ def main():
     pencolor("black")
     goto(0, -200)
     pencolor(0.7, 0.7, 1)
-    write("Please wait...",
-          align="center", font=('Arial Black', 36, 'bold'))
+    write("Please wait...", align="center", font=('Arial Black', 36, 'bold'))
     test(600, 8, startpos=(70, 117))
     return "Done"
 

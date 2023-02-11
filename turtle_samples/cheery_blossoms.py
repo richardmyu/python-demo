@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import turtle as T
 import random
 import time

@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
-
-# colormixer
-
 from turtle import Screen, Turtle, mainloop
 
 
 class ColorTurtle(Turtle):
-
     def __init__(self, x, y):
         Turtle.__init__(self)
         self.shape("turtle")
@@ -45,9 +40,9 @@ def main():
     screen.delay(0)
     screen.setworldcoordinates(-1, -0.3, 3, 1.3)
 
-    red = ColorTurtle(0, .5)
-    green = ColorTurtle(1, .5)
-    blue = ColorTurtle(2, .5)
+    red = ColorTurtle(0, 0.5)
+    green = ColorTurtle(1, 0.5)
+    blue = ColorTurtle(2, 0.5)
     setbgcolor()
 
     writer = Turtle()

@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 https://www.runoob.com/matplotlib/matplotlib-pyplot.html
 """
+
 import matplotlib.pyplot as plt
 import numpy as np
 

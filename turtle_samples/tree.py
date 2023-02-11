@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """      turtle-example-suite:
 
              tdemo_tree.py
@@ -21,7 +19,7 @@ from time import perf_counter as clock
 
 
 def tree(plist, l, a, f):
-    """ plist is list of pens
+    """plist is list of pens
     l is length of branch
     a is half of the angle between 2 branches
     f is factor by which branch is shortened

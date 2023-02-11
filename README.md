@@ -2,6 +2,12 @@
 
 <a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
 
+```shell
+# env
+python v3.10.9
+pip v22.3.1
+```
+
 ## python venv
 
 ```shell
