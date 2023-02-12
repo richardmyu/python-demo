@@ -1,11 +1,19 @@
-"""
+'''
+@Time: 2023/02/12 21:19:44
+@Author: yum
+@Email: richardminyu@foxmail.com
+@File: mosaic.py
+
 (外源法)将图片转换成马赛克图片
 
 基本思路:
     1.读入目标图像，将他们分割成 M*N 的小块网格；
     2.对于目标图像中的每个小块，从输入的小块图像中找到最佳匹配；
     3.将选择的输入图像安排在 M*N 的网格中，创建最终的照片马赛克。
-"""
+
+command
+    py mosaic.py
+'''
 
 import argparse
 import os
@@ -14,11 +22,13 @@ import numpy as np
 
 
 def get_images(image_dir):
-    """
-    从给定目录里加载所有替换图像
+    """_从给定目录里加载所有替换图像_
 
-    :param image_dir: 目录路径
-    :return: {List[Image]} 替换图像列表
+    Args:
+        image_dir (_str_): _目录路径_
+
+    Returns:
+        _list_: _替换图像列表_
     """
 
     files = os.listdir(image_dir)
@@ -26,6 +36,7 @@ def get_images(image_dir):
     for file in files:
         # 得到文件绝对路径
         file_path = os.path.abspath(os.path.join(image_dir, file))
+
         try:
             # 打开 file 并返回对应的('rb' 二进制读取文本) file object
             fp = open(file_path, "rb")
@@ -42,14 +53,19 @@ def get_images(image_dir):
 
 
 def get_average_rgb(image):
-    """计算图像的平均 RGB 值
+    """_计算图像的平均 RGB 值_
 
     将图像包含的每个像素点的 R、G、B 值分别累加
     然后除以像素点数，就得到图像的平均 R、G、B 值
 
-    :param image: PIL Image 对象
-    :return: 平均 RGB 值
+    Args:
+        image (_type_): _PIL Image 对象_
+
+    Returns:
+        _tuple_: _平均 RGB 值_
     """
+    print('--', type(image))
+
     # 计算像素点数
     n_pixels = image.size[0] * image.size[1]
 
@@ -62,6 +78,7 @@ def get_average_rgb(image):
     # [(c1 * r1, c1 * g1, c1 * b1), (c2 * r2, c2 * g2, c2 * b2), ...]
     # sum_rgb = [(x[0] * x[1][0], x[0] * x[1][1], x[0] * x[1][2]) for x in cols]
     sum_rgb = []
+
     for x in cols:
         sum_rgb.append((x[0] * x[1][0], x[0] * x[1][1], x[0] * x[1][2]))
 
@@ -72,8 +89,10 @@ def get_average_rgb(image):
     # (sum(ci * ri) / np, sum(ci * gi) / np, sum(ci * bi) / np)
     # avg = tuple([int(sum(x) / n_pixels) for x in zip(*sum_rgb)])
     sum_list = []
+
     for x in zip(*sum_rgb):
         sum_list.append(int(sum(x) / n_pixels))
+
     avg = tuple(sum_list)
     return avg
 
