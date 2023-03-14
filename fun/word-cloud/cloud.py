@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-生成指定名称的生日快乐词云。词云形状由指定背景图决定。
+生成指定名称词云。
+词云形状由指定背景图决定。
 
 https://pythondict.com/life-intelligent/tools/python-happy-birthday/
 
@@ -9,6 +10,7 @@ command
 
     py happy.py image new_image_name
 """
+
 import multidict
 import fire
 import matplotlib.pyplot as plt
@@ -19,8 +21,11 @@ from wordcloud import WordCloud, ImageColorGenerator
 # Doraemon
 # Nobita
 
-sub_title_start = '哆啦'
-sub_title_end = 'A梦'
+# sub_title_start = '哆啦'
+# sub_title_end = 'A梦'
+
+sub_title_start = '3.14'
+sub_title_end = '3.14159'
 
 
 def transform_format(val):
