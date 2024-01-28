@@ -1,12 +1,12 @@
 # !/usr/bin/env python
 # coding= utf-8
-'''
+"""
 Author         : yum <richardminyu@foxmail.com>
 Date           : 2024-01-20 14:57:36
 LastEditors    : yum <richardminyu@foxmail.com>
 LastEditTime   : 2024-01-20 22:00:31
 Description    : 生成指定位数密码，写人 TXT
-'''
+"""
 
 # TODO: 有空继续完善
 import random

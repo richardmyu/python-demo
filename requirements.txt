@@ -1,0 +1,15 @@
+autograd==1.5
+matplotlib==3.6.3
+psutil==5.9.4
+PySnooper==1.1.1
+rows==0.4.1
+numpy==1.24.2
+scikit-image==0.19.3
+fire==0.5.0
+imageio==2.25.0
+multidict==6.0.4
+wordcloud==1.8.2.2
+jieba==0.42.1
+pandas==1.5.2
+Pillow==9.4.0
+

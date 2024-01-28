@@ -4,8 +4,7 @@
 
 import math
 
-
-def frustumV(a, d, h):
+def frustum_v(a, d, h):
     r1 = d / 2  # 上底
     r2 = a + d / 2  # 下底
     ss = math.pow(r1, 2) + r1 * r2 + math.pow(r2, 2)
@@ -21,14 +20,14 @@ def frustumV(a, d, h):
 
 
 # 特例
-def frustumVII(a):
+def frustum_vII(a):
     d = 100
     h = 2 * a
-    return frustumV(a, d, h)
+    return frustum_v(a, d, h)
 
 
-print(f'WZ1 V is (a=20, d=100, hc=40) m*3 {frustumVII(20)}')
-print(f'WZ2 V is (a=30, d=100, hc=60) m*3 {frustumVII(30)}')
-print(f'WZ3 V is (a=40, d=100, hc=80) m*3 {frustumVII(40)}')
-print(f'WZ4 V is (a=50, d=100, hc=100) m*3 {frustumVII(50)}')
-print(f'WZ5 V is (a=60, d=100, hc=120) m*3 {frustumVII(60)}')
+print(f'WZ1 V is (a=20, d=100, hc=40) m*3 {frustum_vII(20)}')
+print(f'WZ2 V is (a=30, d=100, hc=60) m*3 {frustum_vII(30)}')
+print(f'WZ3 V is (a=40, d=100, hc=80) m*3 {frustum_vII(40)}')
+print(f'WZ4 V is (a=50, d=100, hc=100) m*3 {frustum_vII(50)}')
+print(f'WZ5 V is (a=60, d=100, hc=120) m*3 {frustum_vII(60)}')

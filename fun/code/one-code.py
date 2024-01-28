@@ -1,12 +1,12 @@
 # !/usr/bin/env python
 # coding= utf-8
-'''
+"""
 Author         : yum <richardminyu@foxmail.com>
 Date           : 2024-01-20 21:57:04
 LastEditors    : yum <richardminyu@foxmail.com>
 LastEditTime   : 2024-01-20 22:00:20
 Description    : 在命令行中直接生成密码
-'''
+"""
 
 import random
 

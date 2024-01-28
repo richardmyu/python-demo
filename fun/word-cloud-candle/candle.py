@@ -63,14 +63,14 @@ words_count = get_words_count_dict()
 # 获得词语和频数
 
 # 获得词云对象，设定词云背景颜色及其图片和字体
-bimg = imread('candle.jpg')
+bgimg = imread('candle.jpg')
 
 # 读取我们想要生成词云的模板图片
-wordcloud = WordCloud(background_color='white', mask=bimg, font_path='simhei.ttf')
+wordcloud = WordCloud(background_color='white', mask=bgimg, font_path='simhei.ttf')
 
 # 如果背景色是透明的，请用这条语句替换上面
 # wordcloud = WordCloud(
-#     background_color=None, mode='RGBA', mask=bimg, font_path='simhei.ttf'
+#     background_color=None, mode='RGBA', mask=bgimg, font_path='simhei.ttf'
 # )
 
 words = words_count.set_index("segment").to_dict()
@@ -79,7 +79,7 @@ words = words_count.set_index("segment").to_dict()
 wordcloud = wordcloud.fit_words(words["count"])
 
 # 将词语及频率映射到词云对象上
-bimgColors = ImageColorGenerator(bimg)
+bgimg_colors = ImageColorGenerator(bgimg)
 
 # 设置画布大小
 plt.figure(figsize=(6, 6))
@@ -88,7 +88,7 @@ plt.figure(figsize=(6, 6))
 plt.axis("off")
 
 # 关闭坐标轴
-plt.imshow(wordcloud.recolor(color_func=bimgColors))
+plt.imshow(wordcloud.recolor(color_func=bgimg_colors))
 
 plt.savefig('word-cloud-candle.png')
 
