@@ -1,4 +1,4 @@
-# -*- cofing: utf-8 -*-
+# -*- config: utf-8 -*-
 
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
