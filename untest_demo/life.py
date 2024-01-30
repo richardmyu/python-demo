@@ -54,6 +54,7 @@ class LifeBoard:
         border_line = '+' + (self.X * '-') + '+'
         self.scr.addstr(0, 0, border_line)
         self.scr.addstr(self.Y + 1, 0, border_line)
+
         for y in range(0, self.Y):
             self.scr.addstr(1 + y, 0, '|')
             self.scr.addstr(1 + y, self.X + 1, '|')
@@ -89,6 +90,7 @@ class LifeBoard:
     def display(self, update_board=True):
         """Display the whole board, optionally computing one generation"""
         M, N = self.X, self.Y
+
         if not update_board:
             for i in range(0, M):
                 for j in range(0, N):
@@ -101,16 +103,20 @@ class LifeBoard:
 
         d = {}
         self.boring = 1
+
         for i in range(0, M):
             L = range(max(0, i - 1), min(M, i + 2))
+
             for j in range(0, N):
                 s = 0
                 live = (i, j) in self.state
+
                 for k in range(max(0, j - 1), min(N, j + 2)):
                     for l in L:
                         if (l, k) in self.state:
                             s += 1
                 s -= live
+
                 if s == 3:
                     # Birth
                     d[i, j] = 1
@@ -142,7 +148,7 @@ class LifeBoard:
 
 
 def erase_menu(stdscr, menu_y):
-    "Clear the space where the menu resides"
+    """Clear the space where the menu resides"""
     stdscr.move(menu_y, 0)
     stdscr.clrtoeol()
     stdscr.move(menu_y + 1, 0)
@@ -150,20 +156,20 @@ def erase_menu(stdscr, menu_y):
 
 
 def display_menu(stdscr, menu_y):
-    "Display the menu of possible keystroke commands"
+    """Display the menu of possible keystroke commands"""
     erase_menu(stdscr, menu_y)
 
     # If color, then light the menu up :-)
     if curses.has_colors():
         stdscr.attrset(curses.color_pair(1))
     stdscr.addstr(menu_y, 4,
-        'Use the cursor keys to move, and space or Enter to toggle a cell.')
+        "Use the cursor keys to move, and space or Enter to toggle a cell.")
     stdscr.addstr(menu_y + 1, 4,
-        'E)rase the board, R)andom fill, S)tep once or C)ontinuously, Q)uit')
+        "E)rase the board, R)andom fill, S)tep once or C)ontinuously, Q)uit")
     stdscr.attrset(0)
 
 
-def keyloop(stdscr):
+def key_loop(stdscr):
     # Clear the screen and display the menu of keys
     stdscr.clear()
     stdscr_y, stdscr_x = stdscr.getmaxyx()
@@ -188,17 +194,17 @@ def keyloop(stdscr):
     board = LifeBoard(subwin, char=ord('*'))
     board.display(update_board=False)
 
-    # xpos, ypos are the cursor's position
-    xpos, ypos = board.X // 2, board.Y // 2
+    # x_pos, y_pos are the cursor's position
+    x_pos, y_pos = board.X // 2, board.Y // 2
 
     # Main loop:
     while True:
-        stdscr.move(1 + ypos, 1 + xpos)   # Move the cursor
+        stdscr.move(1 + y_pos, 1 + x_pos)   # Move the cursor
         c = stdscr.getch()                # Get a keystroke
         if 0 < c < 256:
             c = chr(c)
             if c in ' \n':
-                board.toggle(ypos, xpos)
+                board.toggle(y_pos, x_pos)
             elif c in 'Cc':
                 erase_menu(stdscr, menu_y)
                 stdscr.addstr(menu_y, 6, ' Hit any key to stop continuously '
@@ -232,21 +238,21 @@ def keyloop(stdscr):
             else:
                 # Ignore incorrect keys
                 pass
-        elif c == curses.KEY_UP and ypos > 0:
-            ypos -= 1
-        elif c == curses.KEY_DOWN and ypos + 1 < board.Y:
-            ypos += 1
-        elif c == curses.KEY_LEFT and xpos > 0:
-            xpos -= 1
-        elif c == curses.KEY_RIGHT and xpos + 1 < board.X:
-            xpos += 1
+        elif c == curses.KEY_UP and y_pos > 0:
+            y_pos -= 1
+        elif c == curses.KEY_DOWN and y_pos + 1 < board.Y:
+            y_pos += 1
+        elif c == curses.KEY_LEFT and x_pos > 0:
+            x_pos -= 1
+        elif c == curses.KEY_RIGHT and x_pos + 1 < board.X:
+            x_pos += 1
         elif c == curses.KEY_MOUSE:
             mouse_id, mouse_x, mouse_y, mouse_z, button_state = curses.getmouse()
             if (mouse_x > 0 and mouse_x < board.X + 1 and
                 mouse_y > 0 and mouse_y < board.Y + 1):
-                xpos = mouse_x - 1
-                ypos = mouse_y - 1
-                board.toggle(ypos, xpos)
+                x_pos = mouse_x - 1
+                y_pos = mouse_y - 1
+                board.toggle(y_pos, x_pos)
             else:
                 # They've clicked outside the board
                 curses.flash()
@@ -255,8 +261,8 @@ def keyloop(stdscr):
             pass
 
 
-def main(stdscr):
-    keyloop(stdscr)                 # Enter the main loop
+def main(std_scr):
+    key_loop(std_scr)                 # Enter the main loop
 
 
 if __name__ == '__main__':

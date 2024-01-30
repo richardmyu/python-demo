@@ -4,6 +4,7 @@
 Markov chain simulation of words or characters.
 """
 
+
 class Markov:
     def __init__(self, histsize, choice):
         self.histsize = histsize
@@ -30,6 +31,7 @@ class Markov:
             subseq = seq[max(0, len(seq)-n):]
             options = trans[subseq]
             next = choice(options)
+
             if not next:
                 break
             seq += next
@@ -56,9 +58,11 @@ def test():
         print('Output consists of paragraphs separated by blank')
         print('lines, where lines are no longer than 72 characters.')
         sys.exit(2)
+
     histsize = 2
     do_words = False
     debug = 1
+
     for o, a in opts:
         if '-0' <= o <= '-9': histsize = int(o[1:])
         if o == '-c': do_words = False
@@ -69,6 +73,7 @@ def test():
         args = ['-']
 
     m = Markov(histsize, random.choice)
+
     try:
         for filename in args:
             if filename == '-':
@@ -93,6 +98,7 @@ def test():
                     m.put(data)
     except KeyboardInterrupt:
         print('Interrupted -- continue with data read so far')
+
     if not m.trans:
         print('No valid input files')
         return
@@ -104,22 +110,28 @@ def test():
                 print(repr(key), m.trans[key])
         if histsize == 0: print(repr(''), m.trans[''])
         print()
+
     while True:
         data = m.get()
+
         if do_words:
             words = data
         else:
             words = data.split()
+
         n = 0
         limit = 72
+
         for w in words:
             if n + len(w) > limit:
                 print()
                 n = 0
+
             print(w, end=' ')
             n += len(w) + 1
         print()
         print()
+
 
 if __name__ == "__main__":
     test()

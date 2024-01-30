@@ -1,3 +1,4 @@
+# -*- config: utf-8 -*-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
 import subprocess
@@ -15,10 +16,11 @@ class ServerException(Exception):
 # ---------------------------------------------------------------------
 
 
-class base_case(object):
+class BaseCase(object):
     """条件处理基类"""
 
-    def handle_file(self, handler, full_path):
+    @staticmethod
+    def handle_file(handler, full_path):
         try:
             with open(full_path, 'rb') as reader:
                 content = reader.read()
@@ -27,6 +29,7 @@ class base_case(object):
             msg = '"{0}" cannot be read: {1}'.format(full_path, msg)
             handler.handle_error(msg)
 
+    @staticmethod
     def index_path(self, handler):
         return os.path.join(handler.full_path, 'index.html')
 
@@ -41,7 +44,7 @@ class base_case(object):
 # ---------------------------------------------------------------------
 
 
-class case_no_file(base_case):
+class CaseNoFile(BaseCase):
     """路径不存在"""
 
     def test(self, handler):
@@ -54,7 +57,7 @@ class case_no_file(base_case):
 # ---------------------------------------------------------------------
 
 
-class case_existing_file(base_case):
+class CaseExistingFile(BaseCase):
     """路径是文件"""
 
     def test(self, handler):
@@ -67,7 +70,7 @@ class case_existing_file(base_case):
 # ---------------------------------------------------------------------
 
 
-class case_always_fail(base_case):
+class CaseAlwaysFile(BaseCase):
     """所有情况都不符合时的默认处理类"""
 
     def test(self, handler):
@@ -80,9 +83,10 @@ class case_always_fail(base_case):
 # ---------------------------------------------------------------------
 
 
-class case_cgi_file(base_case):
+class CaseCgiFile(BaseCase):
     """脚本文件处理"""
 
+    @staticmethod
     def run_cgi(self, handler):
         data = subprocess.check_output(['python3', handler.full_path], shell=False)
         handler.send_content(data)
@@ -97,7 +101,7 @@ class case_cgi_file(base_case):
 # ---------------------------------------------------------------------
 
 
-class case_directory_index_file(base_case):
+class CaseDirectoryIndexFile(BaseCase):
     def test(self, handler):
         return os.path.isdir(handler.full_path) and os.path.isfile(
             self.index_path(handler)
@@ -114,11 +118,11 @@ class RequestHandler(BaseHTTPRequestHandler):
     """请求路径合法则返回相应处理，否则返回错误页面"""
 
     Cases = [
-        case_no_file(),
-        case_cgi_file(),  # 注意顺序
-        case_existing_file(),
-        case_directory_index_file(),
-        case_always_fail(),
+        CaseNoFile(),
+        CaseCgiFile(),  # 注意顺序
+        CaseExistingFile(),
+        CaseDirectoryIndexFile(),
+        CaseAlwaysFile(),
     ]
 
     # 错误页面模板
@@ -130,6 +134,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         </body>
         </html>
     """
+
 
     def do_GET(self):
         try:
@@ -158,4 +163,4 @@ class RequestHandler(BaseHTTPRequestHandler):
 if __name__ == '__main__':
     serverAddress = ('', 8080)
     server = HTTPServer(serverAddress, RequestHandler)
-    server.serve_forever()  # -*- coding:utf-8 -*_
+    server.serve_forever()

@@ -21,6 +21,7 @@ import struct
 import socket
 import sys
 
+
 def main():
     group = MYGROUP_6 if "-6" in sys.argv[1:] else MYGROUP_4
 
