@@ -9,6 +9,7 @@ def json_to_csv():
             data = json.loads(f.read())
 
         output = ','.join([*data[0]])
+
         for obj in data:
             output += f'\n{obj["Name"]},{obj["age"]},{obj["birthyear"]}'
 

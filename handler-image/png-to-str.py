@@ -26,9 +26,9 @@ def get_char(r, g, b, alpha=255):
     """将 256 灰度映射到字符上"""
     if alpha == 0:
         return ' '
+
     length = len(ascii_char)
     gray = int(0.2116 * r + 0.7152 * g + 0.0722 * b)
-
     unit = (256 + 1) / length
     return ascii_char[int(gray / unit)]
 
@@ -41,6 +41,7 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
     :param fineness: 输出字符图字符颗粒放缩比，有效值 [0.3, 1.2]
     """
     print('--- do img2ascii ---')
+
     # 将图片转换为 RGB 模式
     try:
         im = Image.open(img).convert('RGBA')
@@ -106,10 +107,12 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
     for i in range(h):
         line = ''
         line_color = []
+
         for j in range(w):
             pixel = im.getpixel((j, i))
             line_color.append(pixel)
             line += get_char(*pixel)
+
         txt.append(line)
         colors.append(line_color)
 
@@ -118,6 +121,7 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
 
     # ImageDraw.Draw(im, mode=None): 创建可用于绘制给定图像的对象
     draw = ImageDraw.Draw(img_txt)
+
     for j in range(len(txt)):
         for i in range(len(txt[0])):
             if is_gray:
@@ -125,6 +129,7 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
                 draw.text((i * block_x, j * block_y), txt[j][i], (119, 136, 153, 255))
             else:
                 draw.text((i * block_x, j * block_y), txt[j][i], colors[j][i])
+
     os.chdir(r'.\img')
     img_txt.save(img_name + '_' + str(int(time.time())) + '_ascii.png')
     print('--- done ---')
@@ -132,6 +137,7 @@ def img2ascii(img, is_gray=False, scale=1, fineness=0.8):
 
 if __name__ == '__main__':
     start_time = datetime.datetime.now()
+
     # img2ascii(IMG, True, 2, 0.6)
     img2ascii(IMG, False, 2, 0.6)
     end_time = datetime.datetime.now()

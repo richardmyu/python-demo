@@ -12,12 +12,12 @@ import matplotlib.pyplot as plt
 from autograd import elementwise_grad as egrad
 
 
-def tanh(x):
+def _tanh(x):
     y = np.exp(-2.0 * x)
     return (1.0 - y) / (1.0 + y)
 
 
-grad_tanh = grad(tanh)
+grad_tanh = grad(_tanh)
 x = np.linspace(-7, 7, 200)
-plt.plot(x, tanh(x), x, egrad(tanh)(x))
+plt.plot(x, _tanh(x), x, egrad(_tanh)(x))
 plt.show()

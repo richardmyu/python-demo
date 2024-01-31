@@ -75,12 +75,12 @@ def gen_happy_birthday_cloud(file, name):
     ).generate_from_frequencies(words)
 
     # 生成词云
-    bimgColors = ImageColorGenerator(bimg)
+    word_cloud = ImageColorGenerator(bimg)
 
     # 渲染
     plt.figure(figsize=(6, 6))
     plt.axis('off')
-    plt.imshow(wordcloud.recolor(color_func=bimgColors))
+    plt.imshow(wordcloud.recolor(color_func=word_cloud))
     plt.savefig(name + '.png')
     plt.show()
 

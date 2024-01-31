@@ -78,6 +78,7 @@ if __name__ == '__main__':
             txt += get_char(*im.getpixel((j, i)))
         # 遍历完一行后需要增加换行符
         txt += '\n'
+
     # 输出到屏幕
     print(txt)
 
@@ -88,4 +89,5 @@ if __name__ == '__main__':
     else:
         with open(OUTPUT_DEFAULT, 'w') as f:
             f.write(txt)
+
     print('--- done ---')

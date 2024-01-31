@@ -1,11 +1,10 @@
-'''
+"""
 @Time: 2023/02/12 21:19:44
 @Author: yum
 @Email: richardminyu@foxmail.com
 @File: mosaic.py
 
 (外源法)将图片转换成马赛克图片
-
 基本思路:
     1.读入目标图像，将他们分割成 M*N 的小块网格；
     2.对于目标图像中的每个小块，从输入的小块图像中找到最佳匹配；
@@ -13,7 +12,8 @@
 
 command
     py mosaic.py
-'''
+"""
+
 
 import argparse
 import os
@@ -23,16 +23,14 @@ import numpy as np
 
 def get_images(image_dir):
     """_从给定目录里加载所有替换图像_
-
     Args:
         image_dir (_str_): _目录路径_
-
     Returns:
         _list_: _替换图像列表_
     """
-
     files = os.listdir(image_dir)
     images = []
+
     for file in files:
         # 得到文件绝对路径
         file_path = os.path.abspath(os.path.join(image_dir, file))
@@ -42,25 +40,25 @@ def get_images(image_dir):
             fp = open(file_path, "rb")
             im = Image.open(fp)
             images.append(im)
+
             # 确定了图像信息，但没有加载全部图像数据，用到时才会
             im.load()
+
             # 用完关闭文件，释放系统资源
             fp.close()
         except Exception:
             # 加载某个图像识别，直接跳过
             print("Invalid image: %s" % (file_path,))
+
     return images
 
 
 def get_average_rgb(image):
     """_计算图像的平均 RGB 值_
-
     将图像包含的每个像素点的 R、G、B 值分别累加
     然后除以像素点数，就得到图像的平均 R、G、B 值
-
     Args:
         image (_type_): _PIL Image 对象_
-
     Returns:
         _tuple_: _平均 RGB 值_
     """
@@ -99,30 +97,30 @@ def get_average_rgb(image):
 
 def get_average_rgb_numpy(image):
     """计算图像的平均 RGB 值，使用 numpy 来计算以提升性能
-
     :param image: PIL Image 对象
     :return: 平均 RGB 值
     """
 
     # 将 PIL Image 对象转换为 numpy 数据数组
     im = np.array(image)
+
     # 获得图像的宽、高和深度
     w, h, d = im.shape
+
     # 将数据数组变形并计算平均值
     return tuple(np.average(im.reshape(w * h, d), axis=0))
 
 
 def split_image(image, size):
     """将图像按网格划分成多个小图像
-
     :param image: PIL Image 对象
     :param size: size 网格的行数和列数
     :return: 小图像列表
     """
-
     m, n = size
     w, h = int(image.size[0] / n), int(image.size[1] / m)
     imgs = []
+
     # 先按行再按列裁剪出 m * n 个小图像
     for j in range(m):
         for i in range(n):
@@ -133,21 +131,19 @@ def split_image(image, size):
 
 def get_match_index(input_avg, avgs):
     """找出颜色值最接近的索引
-
     把颜色值看做三维空间里的一个点
     依次计算目标点跟列表里每个点在三维空间里的距离
     从而得到距离最近的那个点的索引
-
     :param input_avg: 目标颜色值
     :param avgs: 要搜索的颜色值列表
     :return: 命中元素的索引
     """
-
     index = 0
     min_index = 0
 
     # 正无穷
     min_dist = float("inf")
+
     for val in avgs:
         # 三维空间两点距离计算公式 (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
         # + (z1 - z2) * (z1 - z2)，这里只需要比较大小，所以无需求平方根值
@@ -156,22 +152,21 @@ def get_match_index(input_avg, avgs):
             + (val[1] - input_avg[1]) * (val[1] - input_avg[1])
             + (val[2] - input_avg[2]) * (val[2] - input_avg[2])
         )
+
         if dist < min_dist:
             min_dist = dist
             min_index = index
-        index += 1
 
+        index += 1
     return min_index
 
 
 def create_image_grid(images, dims):
     """将图像列表里的小图像按先行后列的顺序拼接为一个大图像
-
     :param images: 小图像列表
     :param dims: 大图像的行数和列数
     :return: 拼接得到的大图像
     """
-
     m, n = dims
 
     # 确保小图像个数满足要求
@@ -187,8 +182,8 @@ def create_image_grid(images, dims):
     # 依次将每个小图像粘贴到大图像里
     for index in range(len(images)):
         # 计算要粘贴到网格的哪行
-
         row = int(index / n)
+
         # 计算要粘贴到网格的哪列
         col = index - n * row
 
@@ -200,14 +195,12 @@ def create_image_grid(images, dims):
 
 def create_photo_mosaic(target_image, input_images, grid_size, reuse_images=True):
     """图片马赛克生成
-
     :param target_image: 目标图像
     :param input_images: 替换图像列表
     :param grid_size: 网格行数和列数
     :param reuse_images: 是否允许重复使用替换图像
     :return: 马赛克图像
     """
-
     # 将目标图像切成网格小图像
     print('splitting input image...')
     target_images = split_image(target_image, grid_size)
@@ -222,6 +215,7 @@ def create_photo_mosaic(target_image, input_images, grid_size, reuse_images=True
 
     # 计算替换图像列表里每个图像的颜色平均值
     avgs = []
+
     for img in input_images:
         # avgs.append(get_average_rgb(img))
         avgs.append(get_average_rgb_numpy(img))
@@ -248,7 +242,6 @@ def create_photo_mosaic(target_image, input_images, grid_size, reuse_images=True
     # 将 output_images 里的图像按网格大小拼接成一个大图像
     print('creating mosaic...')
     mosaic_image = create_image_grid(output_images, grid_size)
-
     return mosaic_image
 
 
@@ -257,6 +250,7 @@ def main():
     parser = argparse.ArgumentParser(
         description='Creates a photo mosaic from input images'
     )
+
     parser.add_argument('--target-image', dest='target_image', required=True)
     parser.add_argument('--input-folder', dest='input_folder', required=True)
     parser.add_argument('--grid-size', nargs=2, dest='grid_size', required=True)
@@ -270,6 +264,7 @@ def main():
 
     # 马赛克图像保存路径，默认为 mosaic.png
     output_filename = 'mosaic.png'
+
     if args.outfile:
         output_filename = args.outfile
 
@@ -292,6 +287,7 @@ def main():
         int(target_image.size[0] / grid_size[1]),
         int(target_image.size[1] / grid_size[0]),
     )
+
     for img in input_images:
         # 缩略图
         img.thumbnail(dims)

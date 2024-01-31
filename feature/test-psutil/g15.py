@@ -8,7 +8,7 @@ https://pypi.org/project/psutil/
 import psutil
 
 
-def CPU_info():
+def cpu_info():
     print("=== CPU 信息 ===")
     print("CPU 逻辑数量 ", psutil.cpu_count())
     print("CPU 物理核心 ", psutil.cpu_count(logical=False))
@@ -59,7 +59,7 @@ def battery_info():
 
 
 if __name__ == '__main__':
-    CPU_info()
+    cpu_info()
     memory_info()
     disk_info()
     net_info()

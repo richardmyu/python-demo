@@ -22,5 +22,4 @@ plt.bar(x, y, color=["#4CAF50", "red", "hotpink", "#556B2F"])
 # 设置柱形图宽度
 plt.subplot(2, 2, 4)
 plt.bar(x, y, color="#4CAF50", width=0.1)
-
 plt.show()

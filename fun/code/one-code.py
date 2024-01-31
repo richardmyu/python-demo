@@ -22,13 +22,13 @@ def generate_special_char(l):
     Returns:
         _str_: _特殊字符组合_
     """
-    LIST_S_CHAR = ')!@#$%^&*(`~+-*'
-    length = len(LIST_S_CHAR)
+    list_s_char = ')!@#$%^&*(`~+-*'
+    length = len(list_s_char)
     r = ''
 
     for _ in range(l):
         i = random.randint(0, length - 1)
-        r += str(LIST_S_CHAR[i:i + 1])
+        r += str(list_s_char[i:i + 1])
 
     return r
 
@@ -60,15 +60,15 @@ def generate_char(l):
     Returns:
         _str_: _字母字符组合_
     """
-    LOWERCASE_CHAR = 'abcdefghijklmnopqrstuvwxyz'
-    UPPERCASE_CHAR = 'ABCDEFJHIJKLMNOPQRSTUVWXYZ'
-    LIST_CHAR = LOWERCASE_CHAR + UPPERCASE_CHAR + LOWERCASE_CHAR + UPPERCASE_CHAR + LOWERCASE_CHAR
-    length = len(LIST_CHAR)
+    lowercase_char = 'abcdefghijklmnopqrstuvwxyz'
+    uppercase_char = 'ABCDEFJHIJKLMNOPQRSTUVWXYZ'
+    list_char = lowercase_char + uppercase_char + lowercase_char + uppercase_char + lowercase_char
+    length = len(list_char)
     r = ''
 
     for _ in range(l):
         i = random.randint(0, length - 1)
-        r += str(LIST_CHAR[i:i + 1])
+        r += str(list_char[i:i + 1])
 
     return r
 
@@ -79,13 +79,13 @@ def mix_all_char(l=12):
     Args:
         l (int, optional): _description_. Defaults to 12.
     """
-    MIN_S_CHAR_COUNT = 2
-    MIN_NUM_COUNT = 2
+    min_s_char_count = 2
+    min_num_count = 2
     r = ''
 
-    txt_s_char = generate_special_char(MIN_S_CHAR_COUNT)
-    txt_num = generate_number(MIN_NUM_COUNT)
-    txt_char = generate_char(l - MIN_S_CHAR_COUNT - MIN_NUM_COUNT)
+    txt_s_char = generate_special_char(min_s_char_count)
+    txt_num = generate_number(min_num_count)
+    txt_char = generate_char(l - min_s_char_count - min_num_count)
     txt = txt_s_char + txt_char + txt_num
     list_index = [_ for _ in range(l)]
     random.shuffle(list_index)
@@ -102,11 +102,11 @@ def mix_num_char(l=12):
     Args:
         l (int, optional): _description_. Defaults to 12.
     """
-    MIN_NUM_COUNT = 4
+    min_num_count = 4
     r = ''
 
-    txt_num = generate_number(MIN_NUM_COUNT)
-    txt_char = generate_char(l - MIN_NUM_COUNT)
+    txt_num = generate_number(min_num_count)
+    txt_char = generate_char(l - min_num_count)
     txt = txt_char + txt_num
     list_index = [_ for _ in range(l)]
     random.shuffle(list_index)

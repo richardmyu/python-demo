@@ -5,27 +5,21 @@
 @File: album_tool.py
 
 压缩博客相册和生成相册对应 JSON 数据
-
 files:
     photos 原始图片
     artwork 原始图片抹除地理等信息
     thumbnail 剪裁图片后再压缩
     data.json 相册的图片信息
-
 command:
     创建相册
         py album_tool.py -a create
-
     插入单张图片
         py album_tool.py -a sign
-
     插入多张图片
         py album_tool.py -a all
 
 改进：为了减少 Image.open 操作，合并了 cut 和 compress 过程；
-
 ---
-
 2022-09-25 移除多余图片，确保一年份的图片不超过 12 张，以减少图片加载
 2022-09-26 移除相册按月分类规则
 """
@@ -57,14 +51,15 @@ class AlbumTool(object):
 
     @staticmethod
     def reset_orientation(img):
-        '''
+        """ 
         处理图片的自动旋转
         增加对 width / height 的调换处理
         https://piexif.readthedocs.io/en/latest/sample.html#rotate-image-by-exif-orientation
         https://zhuanlan.zhihu.com/p/85923289
         https://www.codenong.com/13872331/
-        '''
+        """
         exif_orientation_tag = 274
+
         if (
             hasattr(img, '_getexif')
             and isinstance(img._getexif(), dict)
@@ -72,6 +67,7 @@ class AlbumTool(object):
         ):
             exif_data = img._getexif()
             orientation = exif_data[exif_orientation_tag]
+
             if orientation == 1:
                 pass
             elif orientation == 2:
@@ -88,14 +84,15 @@ class AlbumTool(object):
                 img = img.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
             elif orientation == 8:
                 img = img.rotate(90, expand=True)
+
         return img
 
     @staticmethod
     def reverse_geocoder(geolocator, lat_lon, sleep_sec=5):
-        '''
+        """
         根据经纬度，计算区域
         https://www.pythonheidong.com/blog/article/680556/d9bf76d691415de282f1/
-        '''
+        """
         try:
             # 反向地理编码
             return geolocator.reverse(lat_lon)
@@ -113,10 +110,10 @@ class AlbumTool(object):
 
     @staticmethod
     def get_exif(img):
-        '''
+        """
         获取图片的经纬度以及拍摄时间等信息
         https://zhuanlan.zhihu.com/p/98460548
-        '''
+        """
         img_address = ''
         img_date = ''
         img_time = ''
@@ -190,11 +187,13 @@ class AlbumTool(object):
                 .replace('/', ',')
                 .split(',')
             )
+
             img_longitude = (
                 float(img_longitude[0])
                 + float(img_longitude[1]) / 60
                 + float(img_longitude[2]) / float(img_longitude[3]) / 3600
             )
+
             if img_longitude_ref != 'E':
                 img_longitude = img_longitude * (-1)
 
@@ -207,11 +206,13 @@ class AlbumTool(object):
                 .replace('/', ',')
                 .split(',')
             )
+
             img_latitude = (
                 float(img_latitude[0])
                 + float(img_latitude[1]) / 60
                 + float(img_latitude[2]) / float(img_latitude[3]) / 3600
             )
+
             if img_latitude_ref != 'N':
                 img_latitude = img_latitude * (-1)
         except Exception as e:
@@ -221,6 +222,7 @@ class AlbumTool(object):
 
         f.close()
         location = None
+
         if img_latitude != '' and img_longitude != '':
             reverse_value = str(img_latitude) + ', ' + str(img_longitude)
 
@@ -230,7 +232,6 @@ class AlbumTool(object):
             location = AlbumTool.reverse_geocoder(geolocator, reverse_value)
 
         img_address = location and location.address or ''
-
         img_info = {
             'address': img_address,  # 地址
             'date': img_date,  # 日期
@@ -245,12 +246,13 @@ class AlbumTool(object):
         return img_info
 
     def cut_and_compress(self, image, im):
-        '''
+        """
         1.按照图片长宽进行分割
         取中间的部分，裁剪成正方形
         2.压缩图片
-        '''
+        """
         print('    Cutting and Compressing    ')
+
         # ImageOps.exif_transpose
         # 如果图像具有 EXIF 方向标记，则返回相应地转置的新图像。
         # 否则，返回图像的副本。
@@ -264,6 +266,7 @@ class AlbumTool(object):
         # 保存抹除 exif 信息后的 “原图”
         handler_img.save(self.artwork + image)
         region = (0, 0, 0, 0)
+
         if w < h:
             w, h = h, w
             # 纵图处理
@@ -284,9 +287,9 @@ class AlbumTool(object):
         crop_img.save(self.thumbnail + image)
 
     def describe(self, image, img_info):
-        '''
+        """
         根据当前传入的相册名，图片，描述更新相册的描述 JSON 文件
-        '''
+        """
         print('    Updating the data.json    ')
         (w, h) = img_info.size
         img_exit_info = self.get_exif(self.photos + image)
@@ -310,6 +313,7 @@ class AlbumTool(object):
         # img lit
         items = []
         current = time.strftime('%Y-%m-%d %H:%M-%S', time.localtime(time.time()))
+
         with open(self.data_json, 'r', encoding='utf-8') as json_file:
             data = json.load(json_file)
             items = data['items']
@@ -320,6 +324,7 @@ class AlbumTool(object):
                     # 若存在，则覆盖原信息
                     item = image_dict
                     return
+
             items.insert(0, image_dict)
         else:
             items.insert(0, image_dict)
@@ -334,7 +339,7 @@ class AlbumTool(object):
             json.dump(data, json_file, ensure_ascii=False, sort_keys=False, indent=4)
 
     def check_file(self):
-        '''创建所需且不存在的文件夹'''
+        """创建所需且不存在的文件夹"""
         if not os.path.exists(self.photos):
             os.makedirs(self.photos)
         if not os.path.exists(self.artwork):
@@ -352,20 +357,22 @@ class AlbumTool(object):
                 'image_url': IMAGE_URL,
                 'items': [],
             }
+
             with open(self.data_json, 'w', encoding='utf-8') as json_file:
                 json.dump(
                     data_dict, json_file, ensure_ascii=False, sort_keys=False, indent=4
                 )
 
     def create(self):
-        '''创建相册'''
+        """创建相册"""
         if not os.path.exists(self.galleryPath):
             os.makedirs(self.galleryPath)
+
         self.check_file()
         print(f'Gallery {self.gallery} has created!')
 
     def insert(self, image=''):
-        '''插入单张图片'''
+        """插入单张图片"""
         if len(str((image)).strip()) == 0:
             image = input('Please input the image file name: ')
             image = image.strip()
@@ -374,14 +381,16 @@ class AlbumTool(object):
             if not os.path.exists(self.photos + image):
                 print('Error: image ' + self.gallery + ' is not exists')
                 return
+
         print(f'--- Handling image {image} ---')
         opened_img = Image.open(self.photos + image)
         self.cut_and_compress(image, opened_img)
         self.describe(image, opened_img)
 
     def insert_all(self):
-        '''插入全部图片'''
+        """插入全部图片"""
         self.check_file()
+
         for image in os.listdir(self.photos):
             self.insert(image)
 
@@ -395,6 +404,7 @@ if __name__ == '__main__':
 
     # 非法参数过滤
     COMMAND_LIST = ['create', 'sign', 'all']
+
     if args.action not in COMMAND_LIST:
         print(f'Error: unrecognized arguments: {args.action}')
         sys.exit()
@@ -405,6 +415,7 @@ if __name__ == '__main__':
 
     # 生成相册实例，并进行对应处理
     album = AlbumTool(gallery)
+
     if args.action == 'create':
         album.create()
     elif args.action == 'sign':

@@ -1,12 +1,11 @@
-'''
+"""
 @Time: 2022/09/30 16:32:55
 @Author: yum
 @Email: richardminyu@foxmail.com
 @File: compression.py
-
 压缩图片
 生成的图片输出在当前目录下的 output（没有就自动创建）
-'''
+"""
 
 import os
 import argparse
@@ -37,31 +36,36 @@ def img_compression(image, path=''):
     new_img = img_resize(img, interpolation=cv.INTER_AREA)
 
     # 文件夹检测和创建
-    OUTPUT_IMG = os.getcwd() + os.path.sep + 'output'
-    if not os.path.exists(OUTPUT_IMG):
-        os.mkdir(OUTPUT_IMG)
-    OUTPUT_IMG = OUTPUT_IMG + os.path.sep + path
-    if not os.path.exists(OUTPUT_IMG):
-        os.mkdir(OUTPUT_IMG)
+    output_img = os.getcwd() + os.path.sep + 'output'
+    
+    if not os.path.exists(output_img):
+        os.mkdir(output_img)
+        
+    output_img = output_img + os.path.sep + path
+    
+    if not os.path.exists(output_img):
+        os.mkdir(output_img)
 
     # 写入图片到指定文件夹
-    cv.imwrite(os.path.join(OUTPUT_IMG, image), new_img)
+    cv.imwrite(os.path.join(output_img, image), new_img)
     print(f'--- compress {image}: success ---')
+    
     if cv.waitKey(0) & 0xFF == 27:
         cv.destroyAllWindows()
 
 
 def multiple_imgs(files):
-    '''压缩文件（内全部图片）'''
+    """压缩文件（内全部图片）"""
     if not os.path.exists(files):
         print(f"{files} is not exits")
         return
+    
     for file in os.listdir(files):
         img_compression(file, files)
 
 
 def sign_img(img):
-    '''压缩单张图片'''
+    """压缩单张图片"""
     try:
         img_compression(img)
     except:

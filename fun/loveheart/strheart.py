@@ -6,6 +6,7 @@ import string
 
 l = string.ascii_letters
 s = []
+
 s.append(l[34])
 s.append(l[11])
 s.append(l[14])

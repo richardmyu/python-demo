@@ -10,7 +10,6 @@ from matplotlib.axis import Axis
 x = np.array([1, 2, 3, 4])
 y = np.array([1, 4, 9, 16])
 
-
 plt.title("grid - Test")
 plt.xlabel("x - label")
 plt.ylabel("y - label")

@@ -22,9 +22,8 @@ args = parser.parse_args()
 img = args.file
 s = ''.join(args.file.split('\\')[-1:]) if args.file.find('\\') else args.file
 img_name = ''.join(s.split('.')[0])
-
-ascii_char = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
-tmp_path = ''
+ASCII_CHAR = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. '
+tem_path = ''
 
 
 def gif2pic(gif_file, is_gray=False, scale=1, fineness=0.8):
@@ -39,17 +38,19 @@ def gif2pic(gif_file, is_gray=False, scale=1, fineness=0.8):
 
     # 返回当前工作目录
     concurrent_path = os.getcwd()
-    global tmp_path
-    tmp_path = concurrent_path + r'\tmp_' + img_name
+    global tem_path
+    tem_path = concurrent_path + r'\tmp_' + img_name
 
-    if not os.path.exists(tmp_path):
-        os.mkdir(tmp_path)
+    if not os.path.exists(tem_path):
+        os.mkdir(tem_path)
+
         # 改变当前工作目录到指定的路径
-        os.chdir(tmp_path)
+        os.chdir(tem_path)
     else:
-        os.chdir(tmp_path)
+        os.chdir(tem_path)
+
         # 清空 tmp 目录下内容
-        for f in os.listdir(tmp_path):
+        for f in os.listdir(tem_path):
             os.remove(f)
 
     while True:
@@ -57,13 +58,17 @@ def gif2pic(gif_file, is_gray=False, scale=1, fineness=0.8):
         current = im.tell()
         total = im.n_frames
         name = 'tmp_' + img_name + '_' + str(current) + '.png'
+
         # 保存每一帧图片
         im.save(name)
+
         # 将每一帧处理为字符画
         img2ascii(name, is_gray, scale, fineness)
+
         # 继续处理下一帧
         if current >= (total - 1):
             break
+
         im.seek(current + 1)
 
 
@@ -71,10 +76,11 @@ def get_char(r, g, b, alpha=255):
     """将 256 灰度映射到字符上"""
     if alpha == 0:
         return ' '
-    length = len(ascii_char)
+
+    length = len(ASCII_CHAR)
     gray = int(0.2116 * r + 0.7152 * g + 0.0722 * b)
     unit = (256 + 1) / length
-    return ascii_char[int(gray / unit)]
+    return ASCII_CHAR[int(gray / unit)]
 
 
 def img2ascii(png_img, is_gray, scale, fineness):
@@ -85,6 +91,7 @@ def img2ascii(png_img, is_gray, scale, fineness):
     :param fineness: 输出字符图字符颗粒放缩比
     """
     print('--- do img2ascii ---')
+
     # 将图片转换为 RGB 模式
     try:
         im = Image.open(png_img).convert('RGBA')
@@ -150,10 +157,12 @@ def img2ascii(png_img, is_gray, scale, fineness):
     for i in range(h):
         line = ''
         line_color = []
+        
         for j in range(w):
             pixel = im.getpixel((j, i))
             line_color.append(pixel)
             line += get_char(*pixel)
+
         txt.append(line)
         colors.append(line_color)
 
@@ -162,6 +171,7 @@ def img2ascii(png_img, is_gray, scale, fineness):
 
     # ImageDraw.Draw(im, mode=None): 创建可用于绘制给定图像的对象
     draw = ImageDraw.Draw(img_txt)
+
     for j in range(len(txt)):
         for i in range(len(txt[0])):
             if is_gray:
@@ -179,9 +189,10 @@ def pic2gif(out_name='', duration=1):
     :param duration: gif 图像间隔时间
     """
     print('--- do pic2gif ---')
+
     try:
-        # global tmp_path
-        os.chdir(tmp_path)
+        global tem_path
+        os.chdir(tem_path)
     except FileNotFoundError as e:
         print('FileNotFoundError: {}'.format(e))
         print(
@@ -195,13 +206,14 @@ def pic2gif(out_name='', duration=1):
     # 返回 path 指定的文件夹包含的文件或文件夹的名字的列表
     dirs = os.listdir()  # 没有参数，默认当前工作目录
     images = []
+    
     for d in dirs:
         # imageio.imread(uri, format=None, **kwargs): 从指定的 uri 读取图像
         images.append(imageio.imread(d))
 
     # Aliases mimsave = mimwrite
-    name = out_name if len(out_name) > 0 else img_name
-    imageio.mimsave(name + '_ascii.gif', images, 'GIF', duration=duration)
+    name = out_name + '_ascii.gif' if len(out_name) > 0 else img_name
+    imageio.mimsave(name, images, 'GIF', duration=duration)
     print('--- done ---')
 
 

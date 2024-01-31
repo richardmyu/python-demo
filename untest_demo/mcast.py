@@ -14,7 +14,7 @@ Usage:
 MYPORT = 8123
 MYGROUP_4 = '225.0.0.250'
 MYGROUP_6 = 'ff15:7079:7468:6f6e:6465:6d6f:6d63:6173'
-MYTTL = 1 # Increase to reach other networks
+MYTTL = 1  # Increase to reach other networks
 
 import time
 import struct
@@ -38,7 +38,7 @@ def sender(group):
 
     # Set Time-to-live (optional)
     ttl_bin = struct.pack('@i', MYTTL)
-    if addrinfo[0] == socket.AF_INET: # IPv4
+    if addrinfo[0] == socket.AF_INET:  # IPv4
         s.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl_bin)
     else:
         s.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_MULTICAST_HOPS, ttl_bin)
@@ -65,7 +65,7 @@ def receiver(group):
 
     group_bin = socket.inet_pton(addrinfo[0], addrinfo[4][0])
     # Join group
-    if addrinfo[0] == socket.AF_INET: # IPv4
+    if addrinfo[0] == socket.AF_INET:  # IPv4
         mreq = group_bin + struct.pack('=I', socket.INADDR_ANY)
         s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
     else:
