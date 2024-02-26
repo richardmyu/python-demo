@@ -15,7 +15,7 @@ ax.plot(x, y)
 ax.set_title('Simple plot')
 
 # 创建两个子图 -- 图2
-f, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+f, (ax1, ax2) = plt.subplots(1, 2, sharey='all')
 ax1.plot(x, y)
 ax1.set_title('Sharing Y axis')
 ax2.scatter(x, y)
@@ -36,7 +36,7 @@ plt.subplots(2, 2, num=5, sharey='row')
 plt.subplots(2, 2, num=6, sharex='all', sharey='all')
 
 # 这个也是共享 x 轴和 y 轴 -- 图7
-plt.subplots(2, 2, num=7, sharex=True, sharey=True)
+plt.subplots(2, 2, num=7, sharex='all', sharey='all')
 
 # 创建标识为 10 的图，已经存在的则删除 -- 图10
 fig, ax = plt.subplots(num=10, clear=True)

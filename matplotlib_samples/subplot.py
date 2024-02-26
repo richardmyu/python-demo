@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # plot 1:
-xpoints = np.array([0, 6])
-ypoints = np.array([0, 100])
+point_x = np.array([0, 6])
+point_y = np.array([0, 100])
 
 plt.subplot(1, 2, 1)
-plt.plot(xpoints, ypoints)
+plt.plot(point_x, point_y)
 plt.title("plot 1")
 
 # plot 2:

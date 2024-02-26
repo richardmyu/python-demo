@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-xpoints = np.array([0, 6])
-ypoints = np.array([0, 100])
+point_x = np.array([0, 6])
+point_y = np.array([0, 100])
 
-plt.plot(xpoints, ypoints, 'r--')
+plt.plot(point_x, point_y, 'r--')
 plt.show()
