@@ -21,7 +21,7 @@ s.insert(6, " ")
 string = "".join(s)
 
 # 心形的构成字符
-sourceStr = 'o-0'
+sourceStr = '0^0'
 
 # print(string)
 
