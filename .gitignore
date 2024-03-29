@@ -6,3 +6,5 @@ ll_env/
 *.txt
 *.csv
 !requirements.txt
+
+/test-img/
