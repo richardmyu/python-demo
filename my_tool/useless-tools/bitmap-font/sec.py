@@ -2,7 +2,7 @@
 
 # !/usr/bin/env python3
 
-character = u"阵"
+character = u'阵'
 
 
 def get_character_offset(char):
@@ -29,14 +29,14 @@ def show_bit_map_font(font_set, char):
     for i in get_character_matrix_mode(font_set, char):
         for k in i:
             if int(k):
-                print("0", end=" ")
+                print('0', end=' ')
             else:
-                print(".", end=" ")
+                print('.', end=' ')
         print()
 
 
-if __name__ == "__main__":
-    fontSet = open("./HZK16", "rb")  # Keep font memery-resident
+if __name__ == '__main__':
+    fontSet = open('./HZK16', 'rb')  # Keep font memery-resident
     show_bit_map_font(fontSet, character)
 
     fontSet.close()

@@ -87,9 +87,9 @@ def generate_binmap_font(txt):
 
 
 if __name__ == '__main__':
-    text = input("请输入单个汉字： ")
+    text = input('请输入单个汉字： ')
     while text:
         if text == 'q' or text == 'quit':
             break
         generate_binmap_font(text)
-        text = input("请输入单个汉字： ")
+        text = input('请输入单个汉字： ')

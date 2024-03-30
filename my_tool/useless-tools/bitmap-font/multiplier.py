@@ -79,11 +79,11 @@ def generate_bitmap_font(yang, ying, text='新年快乐'):
         file_txt = file_txt + s
         print()
 
-    with open("font.txt", 'w') as tf:
+    with open('font.txt', 'w') as tf:
         tf.write(file_txt)
 
 
 if __name__ == '__main__':
-    target_text = input("请输入想要转换的汉字：")
+    target_text = input('请输入想要转换的汉字：')
     # generate_bitmap_font('o', '.', target_text)
     generate_bitmap_font('●', 'o', target_text)

@@ -12,8 +12,8 @@ Description    : 生成指定位数密码，写人 TXT
 import random
 import os
 
-CODE_PATH = "./code.txt"
-CODED_PATH = "./coded.txt"
+CODE_PATH = './code.txt'
+CODED_PATH = './coded.txt'
 
 
 def generate_special_char(l):
@@ -126,15 +126,15 @@ def input_txt(filepath):
     if not os.path.exists(filepath):
         print(f'当前环境：{os.getcwd()}')
         print(f'文件路径：{filepath}')
-        print("文件不存在，请检查文件是否存在或文件路径是否正确。")
+        print('文件不存在，请检查文件是否存在或文件路径是否正确。')
     else:
         try:
-            with open(filepath, 'r', encoding="utf-8") as file:
+            with open(filepath, 'r', encoding='utf-8') as file:
                 list_name = file.readlines()
         except FileNotFoundError:
             print(f'当前环境：{os.getcwd()}')
             print(f'文件路径：{filepath}')
-            print("文件未找到，请检查文件路径是否正确。")
+            print('文件未找到，请检查文件路径是否正确。')
 
     return list_name
 
@@ -144,29 +144,29 @@ def output_txt(filepath):
     input_diff = []
 
     if not os.path.exists(filepath):
-        with open(filepath, 'w', encoding="utf-8") as file:
+        with open(filepath, 'w', encoding='utf-8') as file:
             for line in input_list:
-                if line.strip("\n"):
+                if line.strip('\n'):
                     all_char = ''.join(mix_all_char())
                     num_char = ''.join(mix_num_char())
-                    txt = line.strip("\n") + " " + all_char + " " + num_char + "\n"
+                    txt = line.strip('\n') + ' ' + all_char + ' ' + num_char + '\n'
                     file.write(txt)
     else:
-        with open(filepath, 'r', encoding="utf-8") as file:
+        with open(filepath, 'r', encoding='utf-8') as file:
             inputed_list = file.readlines()
 
         for _ in input_list:
-            if _.strip("\n") not in ''.join(inputed_list):
+            if _.strip('\n') not in ''.join(inputed_list):
                 input_diff.append(_)
 
-        with open(filepath, 'a', encoding="utf-8") as file:
+        with open(filepath, 'a', encoding='utf-8') as file:
             for line in input_diff:
-                if line.strip("\n"):
+                if line.strip('\n'):
                     all_char = ''.join(mix_all_char())
                     num_char = ''.join(mix_num_char())
-                    txt = line.strip("\n") + " " + all_char + " " + num_char + "\n"
+                    txt = line.strip('\n') + ' ' + all_char + ' ' + num_char + '\n'
                     file.write(txt)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     output_txt(CODED_PATH)

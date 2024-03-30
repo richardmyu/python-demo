@@ -12,8 +12,8 @@ import os
 import re
 import shutil
 
-INPUT_FILE = "." + os.sep + "img-source"
-OUTPUT_FILE = "." + os.sep + "output-output"
+INPUT_FILE = '.' + os.sep + 'img-source'
+OUTPUT_FILE = '.' + os.sep + 'output-output'
 
 
 def main():
@@ -28,14 +28,14 @@ def main():
         # yyyymmdd yyyy-mm-dd yyyy_mm_dd
         date_re_1 = r'20\d{2}[01]\d[0-3]\d'
         date_re_2 = r'20\d{2}[_-][01]\d[_-][0-3]\d'
-        file_date = ""
+        file_date = ''
 
         # 匹配后，只获取日期字符串
         if re.search(date_re_1, str(file)) is not None:
             file_date = re.search(date_re_1, str(file)).group()
 
         if re.search(date_re_2, str(file)) is not None:
-            file_date = re.search(date_re_2, str(file)).group().replace("-", "").replace("_", "")
+            file_date = re.search(date_re_2, str(file)).group().replace('-', '').replace('_', '')
 
         # 分开年，月，日，建立对应路径
         file_year = file_date[:4]
@@ -59,5 +59,5 @@ def main():
         shutil.move(file_path, day_path)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

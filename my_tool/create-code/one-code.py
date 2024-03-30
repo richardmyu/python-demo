@@ -117,7 +117,7 @@ def mix_num_char(l=12):
     return r
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     all_char = ''.join(mix_all_char())
     num_char = ''.join(mix_num_char())
     print(all_char, num_char)
