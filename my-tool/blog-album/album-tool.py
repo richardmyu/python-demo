@@ -2,7 +2,7 @@
 @Time: 2022/09/30 16:34:15
 @Author: yum
 @Email: richardminyu@foxmail.com
-@File: album_tool.py
+@File: album-tool.py
 
 压缩博客相册和生成相册对应 JSON 数据
 files:
@@ -12,11 +12,11 @@ files:
     data.json 相册的图片信息
 command:
     创建相册
-        py album_tool.py -a create
+        py album-tool.py -a create
     插入单张图片
-        py album_tool.py -a sign
+        py album-tool.py -a sign
     插入多张图片
-        py album_tool.py -a all
+        py album-tool.py -a all
 
 改进：为了减少 Image.open 操作，合并了 cut 和 compress 过程；
 ---

@@ -8,13 +8,13 @@
     data.json 相册的图片信息
 命令:
     创建相册
-    py album_tool.py -a create
+    py album-tool.py -a create
 
     插入单张图片
-    py album_tool.py -a insert
+    py album-tool.py -a insert
 
     插入全部图片
-    py album_tool.py -a insert_all
+    py album-tool.py -a insert_all
 """
 
 import os

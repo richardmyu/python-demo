@@ -2,7 +2,7 @@
 # coding= utf-8
 """
 @Project         : python-demo
-@File            : img_group.py
+@File            : img-group.py
 @Author          : yum <richardminyu@foxmail.com>
 @Date            : 2024/03/21 18:19
 @Description     : 根据图片名称中的 日期 信息分类创建文件夹并移动到对应年月日文件夹
