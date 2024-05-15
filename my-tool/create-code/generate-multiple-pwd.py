@@ -5,35 +5,37 @@ Author         : yum <richardminyu@foxmail.com>
 Date           : 2024-01-20 14:57:36
 LastEditors    : yum <richardminyu@foxmail.com>
 LastEditTime   : 2024-01-20 22:00:31
-Description    : 生成指定位数密码，写人 TXT
+Description    : 生成指定位数密码，写入 TXT
 """
 
 # TODO: 有空继续完善
 import random
 import os
 
+import "generate-pwd"
+
 CODE_PATH = './code.txt'
 CODED_PATH = './coded.txt'
 
 
-def generate_special_char(l):
-    """_生成 l 位特殊字符组_
-
-    Args:
-        l (_int_): _指定特殊字符个数_
-
-    Returns:
-        _str_: _特殊字符组合_
-    """
-    list_s_char = ')!@#$%^&*(`~+-*'
-    length = len(list_s_char)
-    r = ''
-
-    for _ in range(l):
-        i = random.randint(0, length - 1)
-        r += str(list_s_char[i:i + 1])
-
-    return r
+# def generate_special_char(l):
+#     """_生成 l 位特殊字符组_
+#
+#     Args:
+#         l (_int_): _指定特殊字符个数_
+#
+#     Returns:
+#         _str_: _特殊字符组合_
+#     """
+#     list_s_char = ')!@#$%^&*(`~+-*'
+#     length = len(list_s_char)
+#     r = ''
+#
+#     for _ in range(l):
+#         i = random.randint(0, length - 1)
+#         r += str(list_s_char[i:i + 1])
+#
+#     return r
 
 
 def generate_number(l):
