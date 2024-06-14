@@ -12,30 +12,12 @@ import random
 import sys
 
 HELP_INFO = """
-command: python filename/filepath -h/l/...
+command: python filename/filepath -h/n/m/a
     -h # 帮助信息
-  # 单字符模式，必须指定字符类型及数量
-    -n 6 # (仅数字)       152649
-    -l 6 # (仅小写字母)    sdkfal
-    -u 6 # (仅大写字母)    AKDDKL
-    -s 6 # (仅特殊符号)    $*))%#
-    -m   # (等价 -nlu，即常用字符类型)
-    -a   # (等价 -nlus，即全部字符类型)
-    
-  # 组合字符模式，必须分别指定字符类型及其数量
-  # 字符类型可以合并写，但数量参数必须空格隔开
-  # 若只有一个数量参数，则视为密码的总长度，各类型字符数随机
-    -nl 2 4 # (数字+小写字母)    s6gd7g
-    -nu 3   # (数字+大写字母)    5F1
-    -ns 6   # (数字+特殊符号)    @2#435
-    -lu
-    -ls
-    -us
-    -nlu/-m # (数字+小写字母+大写字母)
-    -nls
-    -nus
-    -lus
-    -nlus/-a # (数字+小写字母+大写字母+特殊符号)
+    -n # (数字+小写字母，即常用字符类型)
+    -m # (数字+大、小写字母，即常用字符类型)
+    -a # (数字+大、小写字母+特殊字符，即全部字符类型)
+
 """
 
 
@@ -48,7 +30,7 @@ def generate_special_char(x):
     Returns:
         _str_: _特殊字符组合_
     """
-    list_s_char = ')!@#$%^&*(`~+-*'
+    list_s_char = ')!@#$%^&*(`~+-*/'
     length = len(list_s_char)
     r = ''
 
@@ -99,7 +81,18 @@ def generate_char():
     # return r
 
 
-def mix_all_char(l=12):
+def min_num_lower(l=8):
+    """_数字、小写字母和特殊字符混合组合_
+
+    Args:
+        l:
+
+    Returns:
+
+    """
+
+
+def mix_all_char(l=8):
     """_数字、大小写字母和特殊字符混合组合_
 
     Args:
@@ -122,7 +115,7 @@ def mix_all_char(l=12):
     return r
 
 
-def mix_num_char(l=12):
+def mix_num_char(l=8):
     """_数字、大小写字母混合组合_
 
     Args:
@@ -143,6 +136,10 @@ def mix_num_char(l=12):
     return r
 
 
+def analyse_parameter(f,n):
+    if f=='-n':
+        pass
+
 def analyse_sys():
     """_参数解析_
 
@@ -151,17 +148,23 @@ def analyse_sys():
     """
     print(str(sys.argv))
     global HELP_INFO
-    if len(sys.argv) < 3 or len(sys.argv) > 6:
+    if sys.argv[1] is not None and sys.argv[2] is not None:
+        print(sys.argv[2], type(sys.argv[2]))
+        a=sys.argv[2]
+        # if a.isdigit():
+
+
+    elif sys.argv[1] == '-h':
+        print(HELP_INFO)
+        return
+    else:
         print("请输入合理的参数，如：")
         print(HELP_INFO)
         return
 
-    # print(type(sys.argv))
-    print(sys.argv[1])
-    print(sys.argv[2])
-
 
 if __name__ == '__main__':
+
     analyse_sys()
     # all_char = ''.join(mix_all_char())
     # num_char = ''.join(mix_num_char())
