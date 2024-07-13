@@ -84,7 +84,7 @@ def generate_char(x):
     return r
 
 
-def min_num_lower(l=8):
+def mix_num_lower(l=8):
     """_数字+小写字母 混合组合_
 
     Args:
@@ -94,9 +94,21 @@ def min_num_lower(l=8):
 
     """
     r = ''
-    leng = math.ceil(l / 2)
-    txt_num = generate_num(leng)
-    txt_char = generate_char(l - leng)
+    list_r = []
+    step = 0
+
+    if l >= 12:
+        step = 3
+    else:
+        step = 2
+
+    leng_nem = random.randint(math.floor(l / step), math.floor((l - 1) / 2))
+    txt_num = generate_num(leng_nem)
+    txt_char = generate_char(l - leng_nem)
+    list_r = list(txt_num + txt_char)
+    random.shuffle(list_r)
+    r = ''.join(list_r)
+    print(r)
 
 
 def mix_num_char(l=8):
@@ -105,42 +117,47 @@ def mix_num_char(l=8):
     Args:
         l (int, optional): _description_. Defaults to 8.
     """
-    min_num_count = 4
     r = ''
+    list_r = []
+    step = 0
 
-    txt_num = generate_num(min_num_count)
-    txt_char = generate_char(l - min_num_count)
-    txt = txt_char + txt_num
-    list_index = [_ for _ in range(l)]
-    random.shuffle(list_index)
+    if l > 8:
+        step = 3
+    else:
+        step = 2
 
-    for _ in list_index:
-        r += txt[_:_ + 1]
+    leng_low = random.randint(math.floor(l / step), math.floor((l - 1) / 2))
+    leng_num = l - leng_low * 2
+    txt_num = generate_num(leng_num)
+    txt_low = generate_char(leng_low)
+    txt_upp = generate_char(leng_low).upper()
+    list_r = list(txt_num + txt_low + txt_upp)
+    random.shuffle(list_r)
+    r = ''.join(list_r)
+    print(r)
 
-    return r
 
-
-def mix_all_char(l=8):
+def mix_all_char(l=12):
     """_数字+大小写字母+特殊字符 混合组合_
 
     Args:
         l (int, optional): _description_. Defaults to 12.
     """
-    min_s_char_count = 2
-    min_num_count = 2
     r = ''
+    list_r = []
+    # TODO: 个数组成待调整优化
+    leng_low = math.ceil(l / 4)
+    leng_spe = math.floor(l / 4)
+    leng_num = l - leng_low * 2 - leng_spe
+    txt_num = generate_num(leng_num)
+    txt_low = generate_char(leng_low)
+    txt_upp = generate_char(leng_low).upper()
+    txt_spe = generate_spe_char(leng_spe)
+    list_r = list(txt_num + txt_low + txt_upp + txt_spe)
+    random.shuffle(list_r)
+    r = ''.join(list_r)
+    print(r)
 
-    txt_s_char = generate_spe_char(min_s_char_count)
-    txt_num = generate_num(min_num_count)
-    txt_char = generate_char(l - min_s_char_count - min_num_count)
-    txt = txt_s_char + txt_char + txt_num
-    list_index = [_ for _ in range(l)]
-    random.shuffle(list_index)
-
-    for _ in list_index:
-        r += txt[_:_ + 1]
-
-    return r
 
 def analyse_sys():
     """_参数解析_
@@ -148,15 +165,28 @@ def analyse_sys():
     Returns:
 
     """
-    print(str(sys.argv))
+    print(str(sys.argv[1]))
     global HELP_INFO
-    if sys.argv[1] == '-h':
-        print(HELP_INFO)
-        return
-    elif sys.argv[1] is not None:
-        print(sys.argv[2], type(sys.argv[2]))
-        a = sys.argv[2]
-        # if a.isdigit():
+    if 3 >= len(sys.argv) >= 2:
+        if sys.argv[1] == '-h':
+            print(HELP_INFO)
+            return
+        elif sys.argv[1] == '-n':
+            print(sys.argv[2])
+            if sys.argv[2].isdigit():
+                mix_num_lower(int(sys.argv[2]))
+            else:
+                mix_num_lower()
+        elif sys.argv[1] == '-m':
+            if sys.argv[2].isdigit():
+                mix_num_char(int(sys.argv[2]))
+            else:
+                mix_num_char()
+        elif sys.argv[1] == '-a':
+            if sys.argv[2].isdigit():
+                mix_all_char(int(sys.argv[2]))
+            else:
+                mix_all_char()
     else:
         print("请输入合理的参数，使用 -h 提供帮助信息")
         return
