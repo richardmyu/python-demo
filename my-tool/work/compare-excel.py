@@ -6,6 +6,7 @@
 @Author          : yum <richardminyu@foxmail.com>
 @Date            : 2024/05/08 15:43
 @Description     : 比较两个 .xlsx 文件的差异，在第二个参与比较的文件中显示不同。
+                   COMMAND: py compare-excel.py file1 file2
 
 TODO: 局限，只适合行列一致，同单元格的数据检查
 """
@@ -27,6 +28,8 @@ def compare_excel(file_fir, file_sec):
         print("请输入要比较的文件")
         return
 
+    print("------ comparing... ------")
+
     # 读取 excel 文件
     xlsx_aa = openpyxl.load_workbook(file_fir, data_only=True)
     xlsx_bb = openpyxl.load_workbook(file_sec, data_only=True)
@@ -43,8 +46,8 @@ def compare_excel(file_fir, file_sec):
     # print(row_max, col_max)
 
     # 设置单元格样式
-    diff_cell_font_1 = Font(name='等线', size=18, italic=True, color='FF0000', bold=True)
-    diff_cell_font_2 = Font(name='等线', size=14, italic=True, color='FF0000', bold=True)
+    diff_cell_font_1 = Font(name='等线', size=20, italic=True, color='FF0000', bold=True)
+    # diff_cell_font_2 = Font(name='等线', size=14, italic=True, color='FF0000', bold=True)
     diff_cell_fill = PatternFill(fill_type=None, start_color='98FB98', end_color='00FF7F')
 
     # 映射列
@@ -78,15 +81,16 @@ def compare_excel(file_fir, file_sec):
             elif a_val is not None and b_val is None:
                 # 标准值不为空，比较值为空
                 xlsx_b['' + str(chara_list[j]) + str(i)].value = 'None'
-                xlsx_b['' + str(chara_list[j]) + str(i)].font = diff_cell_font_2
+                xlsx_b['' + str(chara_list[j]) + str(i)].font = diff_cell_font_1
                 xlsx_b['' + str(chara_list[j]) + str(i)].fill = diff_cell_fill
 
     xlsx_bb.save(f"./diff_{os.path.basename(file_fir)}_{os.path.basename(file_sec)}_{math.ceil(time.time())}.xlsx")
+    print("------ success ------")
 
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
         print("请输入合理的参数，如：py compare-excel.py file-1 file-2")
     else:
-        print(sys.argv[1], sys.argv[2], sys.argv)
+        # print(sys.argv[1], sys.argv[2], sys.argv)
         compare_excel(sys.argv[1], sys.argv[2])
