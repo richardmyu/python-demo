@@ -1,6 +1,7 @@
 import csv
 import time
 
+# TODO:Completed
 
 def check_diff(file1, file2):
     diff = ''

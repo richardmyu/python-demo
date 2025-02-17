@@ -1,6 +1,8 @@
 import csv
 import json
 
+# TODO:Completed
+
 csv_file='all_clerks_to_json.csv'
 json_file='all_clerks.json'
 

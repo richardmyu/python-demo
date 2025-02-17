@@ -6,7 +6,7 @@
 @Date            : 2024/08/31 22:28
 @Description     : 从身份证图片读取信息，写入 excel
 """
-
+# TODO:On Hold
 import os, cv2, sys, math, copy, fileutil
 import numpy as np
 import include.binaryzation as bz

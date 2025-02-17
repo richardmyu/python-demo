@@ -30,3 +30,12 @@ pip freeze > requriements.txt
 # 根据 requriements.txt 安装库
 pip install -r requriements.txt
 ```
+
+## Project Status
+
+```
+Not Started（未开始）
+In Progress（进行中）
+Completed（已完成）
+On Hold（暂停）
+```

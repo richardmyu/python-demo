@@ -4,6 +4,7 @@ import os
 import re
 import time
 
+# TODO:On Hold
 def date_to_timestamp(date,format_string="%Y-%m-%d %H:%M:%S"):
     time_array=time.strptime(date,format_string)
     time_stamp=int(time.mktime(time_array))

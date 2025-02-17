@@ -1,5 +1,6 @@
 import csv
 
+# TODO:Completed
 
 def check_repeat(file):
     repeat_str = ''
