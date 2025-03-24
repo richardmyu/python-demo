@@ -1,10 +1,16 @@
-# -*- coding: utf-8 -*-
+# !/usr/bin/env python
+# coding= utf-8
 """
+@Project         : yxtj1
+@File            : boq-clt.py
+@Author          : yum <richardminyu@foxmail.com>
+@Date            : 2025/02/08 12:37
+@Description     : 生成（单个）点阵字体
+
 参考文章链接：
 https://blog.csdn.net/weixin_39623050/article/details/110423917
 https://gist.github.com/dengyt2018/c805f22ae8e3bda3c8d6129524c74b49
 """
-
 import binascii
 
 
